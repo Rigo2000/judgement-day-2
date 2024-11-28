@@ -11,13 +11,7 @@ func ExitState() -> void:
     print(str(being) + " exited pray state");
 
 func Update() -> void:
-    elapsedTime += delta;
-
-    if elapsedTime >= coolDown:
-        #GENERATE PRAYER
-        being.ChangeState("IdleState");
-
-    print("just prayin lol")
+    pass ;
 
 func MakePrayer() -> Quest:
     return Quest.new();
