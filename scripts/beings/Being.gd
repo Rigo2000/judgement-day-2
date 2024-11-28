@@ -20,7 +20,7 @@ var pos: int:
 
 var currentTask: Task;
 
-var inventory: String;
+var inventory: Array;
 
 var coolDown: float = 1.0;
 var elapsedTime;

@@ -21,3 +21,6 @@ res://scenes/positions/position_scene.tscn
 res://scripts/beings/states/MateState.gd
 res://scripts/beings/states/GatherResource.gd
 res://scripts/beings/states/Task.gd
+res://scripts/beings/states/GatherState.gd
+res://scripts/globals/GameEvent.gd
+res://scripts/beings/states/DeliverState.gd

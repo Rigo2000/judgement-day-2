@@ -21,8 +21,13 @@ func Update():
 		if being.currentTask != null:
 			##Does the being has a target for the task yet?
 			if being.currentTask.target == null:
-				var nearestObjectOfType = being.FindNearestOfResource(being.currentTask.resourceType);
-				being.currentTask.target = nearestObjectOfType;
+				if being.currentTask.primaryTask == "Gather":
+					var nearestObjectOfType = being.FindNearestOfResource(being.currentTask.resourceType);
+					being.currentTask.target = nearestObjectOfType;
+				elif being.currentTask.primaryTask == "Deliver":
+					##ASK POPULATION FOR LOCATION OF PLACE THAT NEEDS IT
+					##OR IF NO NEED IT; DELIVER IT TO TOWN STOCK
+					pass ;
 
 			##Is the being currently on the targetpos
 			if being.currentTask.target.GetPositionNodeIndex() != being.GetPositionNodeIndex():

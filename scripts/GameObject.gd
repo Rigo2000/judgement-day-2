@@ -14,3 +14,6 @@ func GetPositionNodeIndex() -> int:
 				return p.get_index();
 	
 	return -1;
+
+func GatherResource() -> String:
+	return "Wood";
