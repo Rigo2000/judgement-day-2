@@ -18,3 +18,6 @@ res://scenes/globals/quest_manager.tscn
 res://scenes/globals/game_manager.tscn
 res://scenes/being_scene.tscn
 res://scenes/positions/position_scene.tscn
+res://scripts/beings/states/MateState.gd
+res://scripts/beings/states/GatherResource.gd
+res://scripts/beings/states/Task.gd

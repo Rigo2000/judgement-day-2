@@ -1,6 +1,4 @@
-class_name BeingState;
-
-var being: Being;
+extends BeingState;
 
 func EnterState() -> void:
     pass ;

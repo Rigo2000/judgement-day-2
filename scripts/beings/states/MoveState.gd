@@ -1,43 +1,39 @@
 extends BeingState
 
-var target: GameObject
-var next_state: String # The state to transition to after reaching the target
+
 var arrived: bool = false
 
 var moveCooldown = 1.0;
 var elapsedTime;
 
 ##A target is a gameobject, like a foodtype or a being
-func EnterState(_target: GameObject = null, _next_state: String = "null"):
-	if _target == null:
+func EnterState():
+	if being.currentTask.target == null:
 		print("WARNING TARGET IS NULL")
 	elapsedTime = 0.0;
-	target = _target
-	next_state = _next_state
 	arrived = false
-	print(being.name, " is moving to: ", target, " to perform ", next_state)
+	print(being.name, " is moving to: ", being.currentTask.target)
 
 func ExitState():
-	print(being.name, "stopped moving.")
+	print(being.name, " stopped moving.")
 
-func Update(delta: float):
+func Update():
+	##if movecooldown is cooled down (HACK)	
+	if true:
+		if being.currentTask.target != null:
+			#if positionNode index of target is > than positionNode index of being
+			if being.currentTask.target.GetPositionNodeIndex() > being.GetPositionNodeIndex():
+				MovePosition(1);
+			elif being.currentTask.target.GetPositionNodeIndex() < being.GetPositionNodeIndex():
+				MovePosition(-1);
+			elif being.currentTask.target.GetPositionNodeIndex() == being.GetPositionNodeIndex():
+				arrived = true;
 
-	elapsedTime += delta;
-
-	##if movecooldown is cooled down
-	if elapsedTime >= moveCooldown:
-		print(str(target))
-		elapsedTime = 0.0;
-		#if positionNode index of target is > than positionNode index of being
-		if target.GetPositionNodeIndex() > being.GetPositionNodeIndex():
-			MovePosition(1);
-		elif target.GetPositionNodeIndex() < being.GetPositionNodeIndex():
-			MovePosition(-1);
-		elif target.GetPositionNodeIndex() == being.GetPositionNodeIndex():
-			arrived = true;
-
-	if arrived:
-		being.ChangeState(next_state);
+			if arrived:
+				being.currentTask.secondaryTask = "null";
+				being.ChangeState("IdleState");
+		else:
+			being.ChangeState("IdleState");
 
 func MovePosition(amount: int):
 	var currentPos = being.GetPositionNodeIndex();

@@ -1,11 +1,10 @@
-class_name BeingState;
+extends BeingState;
 
-var being: Being;
+func EnterStateWithTask() -> void:
 
-func EnterState() -> void:
     pass ;
-    
 
+    
 func ExitState() -> void:
     pass ;
 

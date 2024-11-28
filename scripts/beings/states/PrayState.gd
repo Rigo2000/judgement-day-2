@@ -10,7 +10,7 @@ func EnterState(_target: GameObject = null, _next_state: String = "null") -> voi
 func ExitState() -> void:
     print(str(being) + " exited pray state");
 
-func Update(delta) -> void:
+func Update() -> void:
     elapsedTime += delta;
 
     if elapsedTime >= coolDown:
