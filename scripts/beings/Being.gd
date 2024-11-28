@@ -6,7 +6,7 @@ var age: int;
 var sleep: int;
 var devotion: int;
 
-var pop: Population;
+var population: Population;
 
 var currentState: BeingState = null;
 var states = {};

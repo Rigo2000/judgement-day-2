@@ -24,3 +24,4 @@ res://scripts/beings/states/Task.gd
 res://scripts/beings/states/GatherState.gd
 res://scripts/globals/GameEvent.gd
 res://scripts/beings/states/DeliverState.gd
+res://scripts/beings/states/ComplexTask.gd

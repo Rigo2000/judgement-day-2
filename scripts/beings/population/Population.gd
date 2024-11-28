@@ -7,6 +7,7 @@ var resources: Dictionary = {
     "stone": 0,
 }
 var buildings: Dictionary;
+var townSquare: GameObject;
 
 var workforce: Dictionary = {
     "farmers": 0, "builders": 0, "woodcutter": 0, "stonecutter": 0

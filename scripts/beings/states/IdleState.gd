@@ -48,3 +48,36 @@ func FindNewTask():
 		var newTask: Task = Task.new("Food", "Consume");
 		print(str(being) + " hunger is " + str(being.hunger) + " getting new task " + str(newTask))
 		being.currentTask = newTask;
+
+
+func NewUpdate
+
+
+var orderedTask = [];
+
+func NewTaskLogic():
+	var newOrderedTask = [];
+	if being.hunger <= 20:
+		var nearestFood = being.FindNearestOfResource("Food");
+
+		var newTask: ComplexTask = ComplexTask.new(nearestFood, "Consume");
+		newOrderedTask.append(newTask);
+
+		if nearestFood.GetPositionNodeIndex() != being.GetPositionNodeIndex():
+			newOrderedTask.append(ComplexTask.new(nearestFood, "MoveTo"));
+
+		orderedTask = newOrderedTask;
+	
+	else:
+		##CHECK Population for tasks to be completed
+		##Doing wood gathering as example
+		newOrderedTask.append(ComplexTask.new(being.population.townSquare, "DeliverWood"))
+		
+		if !being.inventory.has("Wood"):
+			var nearestTree = being.FindNearestOfResource("Tree");
+			newOrderedTask.append(ComplexTask.new(nearestTree, "Gather"));
+
+			if nearestTree.GetPositionNodeIndex() != being.GetPositionNodeIndex():
+				newOrderedTask.append(ComplexTask.new(nearestTree, "MoveTo"));
+
+		orderedTask = newOrderedTask;
