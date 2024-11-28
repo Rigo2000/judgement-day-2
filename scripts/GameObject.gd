@@ -16,4 +16,4 @@ func GetPositionNodeIndex() -> int:
 	return -1;
 
 func GatherResource() -> String:
-	return "Wood";
+	return "Food";

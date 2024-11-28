@@ -1,7 +1,7 @@
 extends BeingState;
 
 var count: int = 0;
-var actionsPerResource: int = 4;
+var actionsPerResource: int = 1;
 
 func EnterState() -> void:
 	count = 0;
@@ -11,16 +11,10 @@ func ExitState() -> void:
 	print(str(being) + " exited the gather state");
 
 func Update() -> void:
-		#if food is still there, eat it
-		if being.currentTask.target != null:
-			if count < actionsPerResource:
-				count += 1;
-			elif count >= actionsPerResource:
-				count = 0;
-				being.inventory.append(being.currentTask.target.GatherResource());
-			#GlobalEvents.emit_signal("beingUpdate", GameEvent.new(being, "beingHasEaten"));
-				being.currentTask = Task.new("Wood", "Deliver")
-				being.ChangeState("IdleState");
-		#otherwise go to idlestate
-		else:
+	if being.cTask.target != null:
+		count += 1;
+		if count >= actionsPerResource:
+			count = 0;
+			being.inventory = being.cTask.target.GatherResource();
+			being.orderedTask.erase(being.cTask);
 			being.ChangeState("IdleState");

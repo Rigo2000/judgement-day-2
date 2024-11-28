@@ -20,7 +20,14 @@ var pos: int:
 
 var currentTask: Task;
 
-var inventory: Array;
+var orderedTask = [];
+
+var cTask: ComplexTask:
+	get:
+		return orderedTask[orderedTask.size() - 1];
+		
+
+var inventory: String;
 
 var coolDown: float = 1.0;
 var elapsedTime;
@@ -30,6 +37,7 @@ func _ready() -> void:
 	states["IdleState"] = preload("res://scripts/beings/states/IdleState.gd").new();
 	states["EatState"] = preload("res://scripts/beings/states/EatState.gd").new();
 	states["MoveState"] = preload("res://scripts/beings/states/MoveState.gd").new();
+	states["GatherState"] = preload("res://scripts/beings/states/GatherState.gd").new();
 
 	for state: BeingState in states.values():
 		state.being = self;

@@ -7,14 +7,12 @@ func ExitState() -> void:
 	print(str(being) + " exited the eat state");
 
 func Update() -> void:
-		#if food is still there, eat it
-		if being.currentTask.target != null && being.currentTask.target.type == "Food":
-			being.currentTask.target.DestroyObject();
-			#GlobalEvents.emit_signal("beingUpdate", GameEvent.new(being, "beingHasEaten"));
-			being.hunger += 50;
-			print(str(being) + "eats and hunger is now" + str(being.hunger))
-			being.currentTask = null;
-			being.ChangeState("IdleState");
-		#otherwise go to idlestate
-		else:
-			being.ChangeState("IdleState");
+	##EAT FROM INVENTORY
+	if being.inventory == "Food":
+		being.inventory = "";
+		being.hunger += 100;
+		print(str(being) + "eats and hunger is now" + str(being.hunger))
+		being.orderedTask.erase(being.cTask);
+		being.ChangeState("IdleState");
+	else:
+		print("Error, being has no food in inventory");
