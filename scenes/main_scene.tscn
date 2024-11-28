@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0c23dcm83una"]
+
+[ext_resource type="PackedScene" uid="uid://oek7j158voql" path="res://scenes/globals/quest_manager.tscn" id="2_lmw7e"]
+
+[node name="Main" type="Node2D"]
+
+[node name="QuestManager" parent="." groups=["QuestManager"] instance=ExtResource("2_lmw7e")]
+unique_name_in_owner = true
+
+[node name="PositionsNode" type="Node2D" parent="." groups=["PositionsNode"]]
+unique_name_in_owner = true
+
+[editable path="QuestManager"]
