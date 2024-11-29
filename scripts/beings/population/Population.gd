@@ -23,7 +23,7 @@ func DetermineTask() -> ComplexTask:
     ##Check if food is low
     ##Probably make a more complex check for that
     #if resources["food"] < 20:
-    return ComplexTask.new().setTaskType("Deliver").setTarget(townSquare).setResourceType("Wood");
+    return ComplexTask.new().setTaskType("Deliver").setTarget(townSquare).setResourceType("Food");
     #Else check if wood is low, also by looking at wood available vs how much is needed for current tasks
     #elif resources["wood"] < 20:
     #    return ComplexTask.new();

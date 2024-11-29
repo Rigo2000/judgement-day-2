@@ -25,7 +25,7 @@ func Update() -> void:
 				being.orderedTask.append(newMoveTask);
 				being.ChangeState("IdleState");
 			else:
-				deliverTask.target.inventory += deliverTask.resourceType;
+				deliverTask.target.inventory.append(deliverTask.resourceType);
 				being.inventory.erase(deliverTask.resourceType);
 				being.orderedTask.erase(deliverTask);
 				being.ChangeState("IdleState");

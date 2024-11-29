@@ -3,6 +3,7 @@ class_name GameObject extends Node2D;
 
 var type;
 
+var inventory = [];
 
 func DestroyObject() -> void:
 	queue_free();
