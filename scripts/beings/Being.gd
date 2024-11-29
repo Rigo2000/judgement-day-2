@@ -33,11 +33,13 @@ var coolDown: float = 1.0;
 var elapsedTime;
 
 func _ready() -> void:
+	hunger = 200;
 	elapsedTime = 0.0;
 	states["IdleState"] = preload("res://scripts/beings/states/IdleState.gd").new();
 	states["EatState"] = preload("res://scripts/beings/states/EatState.gd").new();
 	states["MoveState"] = preload("res://scripts/beings/states/MoveState.gd").new();
 	states["GatherState"] = preload("res://scripts/beings/states/GatherState.gd").new();
+	states["DeliverState"] = preload("res://scripts/beings/states/DeliverState.gd").new();
 
 	for state: BeingState in states.values():
 		state.being = self;

@@ -7,6 +7,8 @@ var beingScene = preload("res://scenes/being_scene.tscn");
 var elapsedTime = 0.0;
 var coolDown = 10.0;
 
+var p: Population;
+
 var qm: QuestManager:
 	get:
 		if qm == null:
@@ -34,8 +36,15 @@ func _ready() -> void:
 			var newPosition = positionScene.instantiate()
 			positionsNode.add_child(newPosition);
 
+		SpawnPopulation();
 		SpawnGameObjects();
 		SpawnBeings();
+
+func SpawnPopulation():
+	p = Population.new();
+	var newGameObject = GameObject.new();
+	p.buildings["townSquare"] = newGameObject;
+	positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newGameObject);
 
 func SpawnGameObjects() -> void:
 	for n in 4:
@@ -46,4 +55,5 @@ func SpawnGameObjects() -> void:
 func SpawnBeings() -> void:
 	for n in 1:
 		var newBeing = beingScene.instantiate();
+		newBeing.population = p;
 		positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newBeing);

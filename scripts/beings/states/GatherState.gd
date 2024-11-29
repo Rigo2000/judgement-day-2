@@ -17,12 +17,12 @@ func Update() -> void:
 		var nearestResourceOfType = being.FindNearestOfResource(gatherTask.resourceType);
 
 		if nearestResourceOfType == null:
-			var newWanderTask = ComplexTask.new().setTaskType("MoveTo").setTarget(clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 19));
+			var newWanderTask = ComplexTask.new().setTaskType("MoveTo").setNoTargetIntPos(clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 19));
 			being.orderedTask.append(newWanderTask);
 			being.ChangeState("IdleState");
 
 		##If not on same position, add move task
-		if nearestResourceOfType.GetPositionNodeIndex() != being.GetPositionNodeIndex():
+		elif nearestResourceOfType.GetPositionNodeIndex() != being.GetPositionNodeIndex():
 			var newMoveTask = ComplexTask.new().setTaskType("MoveTo").setTarget(nearestResourceOfType);
 			being.orderedTask.append(newMoveTask);
 			being.ChangeState("IdleState");
