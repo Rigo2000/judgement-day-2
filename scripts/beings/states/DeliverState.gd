@@ -11,14 +11,21 @@ func ExitState() -> void:
 	print(str(being) + " exited the deliver state");
 
 func Update() -> void:
-		#if food is still there, eat it
-		if being.currentTask.target != null:
-            ##LOGIC FOR GIVING RESOUCE TO PLACE
+	var deliverTask: ComplexTask = being.orderedTask[being.orderedTask.find(func(x): return x.taskType == "Deliver")];
 
-            ##LOGIC FOR REMOVING FROM INVENTORY
-			being.inventory.erase(being.currentTask.resourceType);
-			being.currentTask = null;
+	if deliverTask != null:
+		if !(being.inventory.has(deliverTask.resourceType)):
+			var newGatherTask = ComplexTask.new().setTaskType("Gather").setResourceType(deliverTask.resourceType);
+			being.orderedTask.append(newGatherTask);
 			being.ChangeState("IdleState");
-		#otherwise go to idlestate
-		else:
-			being.ChangeState("IdleState");
+		elif being.inventory.has(deliverTask.resourceType):
+			##IF being has resource but not at same position as target, Add MoveTo
+			if being.GetPositionNodeIndex() != deliverTask.target.GetPositionNodeIndex():
+				var newMoveTask = ComplexTask.new().setTaskType("MoveTo").setTarget(deliverTask.target);
+				being.orderedTask.append(newMoveTask);
+				being.ChangeState("IdleState");
+			else:
+				deliverTask.target.inventory += deliverTask.resourceType;
+				being.inventory.erase(deliverTask.resourceType);
+				being.orderedTask.erase(deliverTask);
+				being.ChangeState("IdleState");

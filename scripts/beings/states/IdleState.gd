@@ -31,6 +31,9 @@ func NewTaskLogic():
 	being.orderedTask.clear();
 	if being.hunger <= 80:
 		being.orderedTask.append(ComplexTask.new().setTaskType("Consume").setResourceType("Food"));
+	
+	else:
+		being.orderedTask.append(being.population.GetTask());
 
 
 func BeingWanderTask():
