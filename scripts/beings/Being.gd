@@ -27,7 +27,7 @@ var cTask: ComplexTask:
 		return orderedTask[orderedTask.size() - 1];
 		
 
-var inventory: String;
+var inventory: Array = [];
 
 var coolDown: float = 1.0;
 var elapsedTime;

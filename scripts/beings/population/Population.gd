@@ -1,51 +1,26 @@
 class_name Population;
 
 var beings: Dictionary;
-var resources: Dictionary = {
-    "food": 0,
-    "wood": 0,
-    "stone": 0,
-}
+
 var buildings: Dictionary;
-var townSquare: GameObject;
+var townSquare: GameObject:
+    get:
+       return buildings["townSquare"];
 
-var workforce: Dictionary = {
-    "farmers": 0, "builders": 0, "woodcutter": 0, "stonecutter": 0
-}
+var resources: Dictionary:
+    get:
+        return buildings["townSquare"].inventory;
 
-func GetHousingCapacity() -> int:
-    var cap = 0;
-    for building in buildings:
-        if building.housing != null:
-            cap += building.housing;
-    
-    return cap;
+var taskQueue: Array = [];
 
-func GetFoodAmount() -> int:
-    return resources.food;
+func AddNewTask():
+    pass ;
 
-func GetWoodAmount() -> int:
-    return resources.wood;
-
-func GetCurrentPopulation() -> int:
-    return beings.size();
-
-func IsFoodSufficient() -> bool:
-    var food_needed = GetCurrentPopulation() * 2 # 2 food per being per cycle
-    var food_in_progress = (workforce["farmers"]);
-    
-    return (resources["food"] + food_in_progress) >= food_needed;
-
-func IsWoodSufficient() -> bool:
-    if resources["wood"] < 20:
-        return false;
-    else:
-        return true;
-
-func DetermineTask() -> String:
-    if !IsFoodSufficient():
-        return "farm";
-    elif !IsWoodSufficient():
-        return "gatherWood";
-    else:
-        return "idle";
+func DetermineTask():
+    ##Check if food is low
+    ##Probably make a more complex check for that
+    if resources["food"] < 20:
+        pass ;
+    #Else check if wood is low, also by looking at wood available vs how much is needed for current tasks
+    elif resources["wood"] < 20:
+        pass ;

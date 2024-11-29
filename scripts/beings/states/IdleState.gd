@@ -28,33 +28,14 @@ func Update():
 		
 
 func NewTaskLogic():
-	var newOrderedTask = [];
-	if being.hunger <= 20:
-		print(1)
-		newOrderedTask.append(ComplexTask.new(being, "Consume"))
+	being.orderedTask.clear();
+	if being.hunger <= 80:
+		being.orderedTask.append(ComplexTask.new().setTaskType("Consume").setResourceType("Food"));
 
-		if being.inventory != "Food":
-			var nearestFood = being.FindNearestOfResource("Food");
 
-			var newTask: ComplexTask = ComplexTask.new(nearestFood, "Gather");
-			newOrderedTask.append(newTask);
-
-			if nearestFood.GetPositionNodeIndex() != being.GetPositionNodeIndex():
-				newOrderedTask.append(ComplexTask.new(nearestFood, "MoveTo"));
-
-		being.orderedTask = newOrderedTask;
-	
-	else:
-		##CHECK Population for tasks to be completed
-		##Doing wood gathering as example
-		newOrderedTask.append(ComplexTask.new(being.population.townSquare, "Deliver"))
-		newOrderedTask.append(ComplexTask.new(being.population.townSquare, "MoveTo"));
-		
-		if !being.inventory != "Wood":
-			var nearestTree = being.FindNearestOfResource("Tree");
-			newOrderedTask.append(ComplexTask.new(nearestTree, "Gather"));
-
-			if nearestTree.GetPositionNodeIndex() != being.GetPositionNodeIndex():
-				newOrderedTask.append(ComplexTask.new(nearestTree, "MoveTo"));
-
-		being.orderedTask = newOrderedTask;
+func BeingWanderTask():
+	being.orderedTask.clear();
+	##Get a random position near being
+	var randomPos: int = clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 19);
+	##TODO: Fix the wander task
+	being.orderedTask.append(ComplexTask.new());

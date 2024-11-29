@@ -4,25 +4,35 @@ extends BeingState
 var arrived: bool = false
 ##A target is a gameobject, like a foodtype or a being
 func EnterState():
+	print(str(being) + " entered the move state")
 	arrived = false
-	print(being.name, " is moving to: " + str(being.orderedTask[being.orderedTask.size() - 1].target));
+	print(being.name, " is moving to: " + str(being.orderedTask[being.orderedTask.find(func(x): return x.taskType == "MoveTo")].target));
 
 func ExitState():
-	print(being.name, " stopped moving.")
+	print(str(being) + " exited the move state")
 
 func Update():
-	if being.cTask != null:
-		if being.cTask.target.GetPositionNodeIndex() > being.GetPositionNodeIndex():
+	var moveTask = being.orderedTask[being.orderedTask.find(func(x): return x.taskType == "MoveTo")];
+
+	if moveTask != null:
+		var targetPos;
+
+		if moveTask.target != null:
+			targetPos = moveTask.target.GetPositionNodeIndex();
+		elif moveTask.target == null && moveTask.noTargetIntPos != 1:
+			targetPos = moveTask.noTargetIntPos;
+
+		if targetPos > being.GetPositionNodeIndex():
 			MovePosition(1);
-		elif being.cTask.target.GetPositionNodeIndex() < being.GetPositionNodeIndex():
+		elif targetPos < being.GetPositionNodeIndex():
 			MovePosition(-1);
-		elif being.cTask.target.GetPositionNodeIndex() == being.GetPositionNodeIndex():
+		elif targetPos == being.GetPositionNodeIndex():
 			arrived = true;
 
 		if arrived:
-			being.orderedTask.erase(being.cTask);
+			being.orderedTask.erase(moveTask);
 			being.ChangeState("IdleState");
-			
+
 func MovePosition(amount: int):
 	var currentPos = being.GetPositionNodeIndex();
 	being.get_parent().remove_child(being);
