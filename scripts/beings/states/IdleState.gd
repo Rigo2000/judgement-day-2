@@ -5,7 +5,6 @@ var coolDown = 1.0;
 
 func EnterState() -> void:
 	timeElapsed = 0.0;
-	#GlobalEvents.emit_signal("beingUpdate", GameEvent.new(being, "beingEnteredIdleState"));
 	print(str(being) + " entered idle state");
 
 func ExitState() -> void:
@@ -13,32 +12,62 @@ func ExitState() -> void:
 
 
 func Update():
-	if being.orderedTask.size() > 0:
-
-		if being.orderedTask[being.orderedTask.size() - 1].taskType == "MoveTo":
+	if being.chainedTask.size() > 0:
+		if being.chainedTask[being.chainedTask.size() - 1].taskType == "MoveTo":
 			being.ChangeState("MoveState");
-		if being.orderedTask[being.orderedTask.size() - 1].taskType == "Consume":
+		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Consume":
 			being.ChangeState("EatState");
-		if being.orderedTask[being.orderedTask.size() - 1].taskType == "Gather":
+		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Gather":
 			being.ChangeState("GatherState");
-		if being.orderedTask[being.orderedTask.size() - 1].taskType == "Deliver":
+		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Deliver":
 			being.ChangeState("DeliverState");
+		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Mate":
+			being.ChangeState("MateState");
 	else:
 		NewTaskLogic();
 		
 
 func NewTaskLogic():
-	being.orderedTask.clear();
+	being.chainedTask.clear();
 	if being.hunger <= 80:
-		being.orderedTask.append(ComplexTask.new().setTaskType("Consume").setResourceType("Food"));
+		being.chainedTask.append(Task.new().setTaskType("Consume").setResourceType("Food"));
 	
 	else:
-		being.orderedTask.append(being.population.GetTask());
+		var populationTask = being.population.GetTask();
 
+		if populationTask != null:
+			being.chainedTask.append(being.population.GetTask());
+		else:
+			##Do idle tasks like pray, wander, mate
+			##Based somewhat on personality
+			var mateTask = GetMateTask();
+			if mateTask != null:
+				being.chainedTask.append(mateTask);
+			else:
+				being.chainedTask.append(GetWanderTask());
+			
 
-func BeingWanderTask():
-	being.orderedTask.clear();
+func GetWanderTask() -> Task:
+	being.chainedTask.clear();
 	##Get a random position near being
 	var randomPos: int = clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 19);
 	##TODO: Fix the wander task
-	being.orderedTask.append(ComplexTask.new());
+	return Task.new().setTaskType("MoveTo").setNoTargetIntPos(randomPos);
+
+func GetMateTask() -> Task:
+	print(being.population.beings.size())
+
+	being.chainedTask.clear();
+
+	var randomBeingInPopulation = being.population.beings[randi_range(0, being.population.beings.size() - 1)];
+	var tries = 0;
+	while randomBeingInPopulation == being && randomBeingInPopulation.pregnancy != null:
+		tries += 1;
+		if tries > 50:
+			break ;
+		randomBeingInPopulation = being.population.beings[randi_range(0, being.population.beings.size() - 1)];
+	
+	if randomBeingInPopulation != being:
+		return Task.new().setTaskType("Mate").setTarget(randomBeingInPopulation);
+	else:
+		return null;

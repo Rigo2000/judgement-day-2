@@ -33,8 +33,9 @@ func _process(delta):
 func _ready() -> void:
 	if true:
 		for n in 20:
-			var newPosition = positionScene.instantiate()
+			var newPosition: Node2D = positionScene.instantiate()
 			positionsNode.add_child(newPosition);
+			newPosition.position = Vector2(50 + n * 100, 200)
 
 		SpawnPopulation();
 		SpawnGameObjects();
@@ -53,7 +54,17 @@ func SpawnGameObjects() -> void:
 		positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newGameObject);
 
 func SpawnBeings() -> void:
-	for n in 1:
+	for n in 2:
 		var newBeing = beingScene.instantiate();
 		newBeing.population = p;
 		positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newBeing);
+		p.beings.append(newBeing);
+
+	print(p.beings.size())
+
+func CreateNewBeing(parentA: Being, parentB: Being = null):
+	##at some point parents will influence how the child becomes
+		var newBeing = beingScene.instantiate();
+		newBeing.population = parentA.population;
+		positionsNode.get_children()[parentA.GetPositionNodeIndex()].add_child(newBeing);
+		p.beings.append(newBeing);

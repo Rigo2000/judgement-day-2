@@ -10,4 +10,8 @@ unique_name_in_owner = true
 [node name="PositionsNode" type="Node2D" parent="." groups=["PositionsNode"]]
 unique_name_in_owner = true
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(816, 350)
+zoom = Vector2(0.5, 0.5)
+
 [editable path="QuestManager"]

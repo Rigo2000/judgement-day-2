@@ -1,6 +1,6 @@
 class_name Population;
 
-var beings: Dictionary;
+var beings: Array = [];
 
 var buildings: Dictionary;
 var townSquare: GameObject:
@@ -13,19 +13,68 @@ var resources: Dictionary:
 
 var taskQueue: Array = [];
 
-func AddNewTask():
-    pass ;
+# Time management for periodic updates
+var elapsedTime: float = 0.0
+var coolDown: float = 0.2
 
-func GetTask() -> ComplexTask:
-    return DetermineTask();
+func _process(delta: float) -> void:
+    elapsedTime += delta
+    if elapsedTime >= coolDown:
+        elapsedTime = 0.0
+        AnalyzeNeeds();
 
-func DetermineTask() -> ComplexTask:
-    ##Check if food is low
-    ##Probably make a more complex check for that
-    #if resources["food"] < 20:
-    return ComplexTask.new().setTaskType("Deliver").setTarget(townSquare).setResourceType("Food");
-    #Else check if wood is low, also by looking at wood available vs how much is needed for current tasks
-    #elif resources["wood"] < 20:
-    #    return ComplexTask.new();
-    
-    #return null;
+### Analyze the population's needs and generate tasks
+func AnalyzeNeeds() -> void:
+    # Check if food is critically low
+    if resources.has("food") and resources["food"] < 20:
+        CreateTask("Gather", "Food", townSquare);
+
+    # Check if wood is critically low
+    if resources.has("wood") and resources["wood"] < 50:
+        CreateTask("Gather", "Wood", townSquare);
+
+    # Check for housing needs
+    if CountHouses() < beings.size():
+            CreateTask("Build", "House");
+
+    # Clean up completed or abandoned tasks
+    CleanupTasks()
+
+### Create a population-level task
+func CreateTask(taskType: String, resourceType: String, target: GameObject = null) -> void:
+    # Avoid duplicate tasks
+    for task in taskQueue:
+        if task.taskType == taskType and task.resourceType == resourceType and task.status == Task.TaskStatus.AVAILABLE:
+            return
+
+    # Create and add a new task to the queue
+    var newTask = Task.new().setTaskType(taskType).setResourceType(resourceType).setTarget(target);
+    taskQueue.append(newTask)
+
+
+### Assign a task to a being
+func GetTask() -> Task:
+    for task in taskQueue:
+        if task.status == Task.TaskStatus.AVAILABLE:
+            task.status = Task.TaskStatus.ASSIGNED
+            return task
+    return null
+
+### Mark a task as completed
+func CompleteTask(task: Task) -> void:
+    if task in taskQueue:
+        task.status = Task.TaskStatus.COMPLETED
+
+### Clean up completed or abandoned tasks
+func CleanupTasks() -> void:
+    for i in range(taskQueue.size() - 1, -1, -1): # Iterate in reverse to safely remove items
+        if taskQueue[i].status == Task.TaskStatus.COMPLETED:
+            taskQueue.remove_at(i)
+
+### Count the number of houses in the population
+func CountHouses() -> int:
+    var houseCount = 0
+    for building in buildings.values():
+        if building.type == "House":
+            houseCount += 1
+    return houseCount

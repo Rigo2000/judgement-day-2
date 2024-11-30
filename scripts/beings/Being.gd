@@ -6,6 +6,8 @@ var age: int;
 var sleep: int;
 var devotion: int;
 
+var pregnancy;
+
 var population: Population;
 
 var currentState: BeingState = null;
@@ -18,26 +20,20 @@ var pos: int:
 	get:
 		return GetPositionNodeIndex();
 
-var currentTask: Task;
-
-var orderedTask = [];
-
-var cTask: ComplexTask:
-	get:
-		return orderedTask[orderedTask.size() - 1];
+var chainedTask = [];
 		
-
-var coolDown: float = 1.0;
+var coolDown: float = 0.2;
 var elapsedTime;
 
 func _ready() -> void:
-	hunger = 200;
+	hunger = 20;
 	elapsedTime = 0.0;
 	states["IdleState"] = preload("res://scripts/beings/states/IdleState.gd").new();
 	states["EatState"] = preload("res://scripts/beings/states/EatState.gd").new();
 	states["MoveState"] = preload("res://scripts/beings/states/MoveState.gd").new();
 	states["GatherState"] = preload("res://scripts/beings/states/GatherState.gd").new();
 	states["DeliverState"] = preload("res://scripts/beings/states/DeliverState.gd").new();
+	states["MateState"] = preload("res://scripts/beings/states/MateState.gd").new();
 
 	for state: BeingState in states.values():
 		state.being = self;
@@ -58,6 +54,13 @@ func _process(delta: float) -> void:
 func UpdateBeingStats():
 	hunger -= 1;
 
+
+	if pregnancy != null:
+		pregnancy.UpdatePregnancy();
+		if pregnancy.IsCompleted():
+			GameManager.CreateNewBeing(self);
+			pregnancy = null;
+
 func ChangeState(newState: String) -> void:
 	if currentState:
 		currentState.ExitState();
@@ -66,13 +69,8 @@ func ChangeState(newState: String) -> void:
 	if currentState:
 		currentState.EnterState();
 
-func MakePrayer() -> void:
-	var conditions: Array[Condition] = [];
-
-	conditions.append(Condition.new(self, "hunger", 100));
-
-	GameManager.qm.CreateNewQuest(self, conditions);
-
+func StartPregnancy():
+	pregnancy = Pregnancy.new();
 
 ##STATEMACHINE HELPERS
 func FindNearestOfResource(resourceType: String) -> GameObject:

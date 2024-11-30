@@ -6,13 +6,13 @@ var arrived: bool = false
 func EnterState():
 	print(str(being) + " entered the move state")
 	arrived = false
-	print(being.name, " is moving to: " + str(being.orderedTask[being.orderedTask.find(func(x): return x.taskType == "MoveTo")].target));
+	print(being.name, " is moving to: " + str(being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "MoveTo")].target));
 
 func ExitState():
 	print(str(being) + " exited the move state")
 
 func Update():
-	var moveTask = being.orderedTask[being.orderedTask.find(func(x): return x.taskType == "MoveTo")];
+	var moveTask = being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "MoveTo")];
 
 	if moveTask != null:
 		var targetPos;
@@ -30,7 +30,7 @@ func Update():
 			arrived = true;
 
 		if arrived:
-			being.orderedTask.erase(moveTask);
+			being.chainedTask.erase(moveTask);
 			being.ChangeState("IdleState");
 
 func MovePosition(amount: int):

@@ -11,21 +11,21 @@ func ExitState() -> void:
 	print(str(being) + " exited the deliver state");
 
 func Update() -> void:
-	var deliverTask: ComplexTask = being.orderedTask[being.orderedTask.find(func(x): return x.taskType == "Deliver")];
+	var deliverTask: Task = being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "Deliver")];
 
 	if deliverTask != null:
 		if !(being.inventory.has(deliverTask.resourceType)):
-			var newGatherTask = ComplexTask.new().setTaskType("Gather").setResourceType(deliverTask.resourceType);
-			being.orderedTask.append(newGatherTask);
+			var newGatherTask = Task.new().setTaskType("Gather").setResourceType(deliverTask.resourceType);
+			being.chainedTask.append(newGatherTask);
 			being.ChangeState("IdleState");
 		elif being.inventory.has(deliverTask.resourceType):
 			##IF being has resource but not at same position as target, Add MoveTo
 			if being.GetPositionNodeIndex() != deliverTask.target.GetPositionNodeIndex():
-				var newMoveTask = ComplexTask.new().setTaskType("MoveTo").setTarget(deliverTask.target);
-				being.orderedTask.append(newMoveTask);
+				var newMoveTask = Task.new().setTaskType("MoveTo").setTarget(deliverTask.target);
+				being.chainedTask.append(newMoveTask);
 				being.ChangeState("IdleState");
 			else:
 				deliverTask.target.inventory.append(deliverTask.resourceType);
 				being.inventory.erase(deliverTask.resourceType);
-				being.orderedTask.erase(deliverTask);
+				being.chainedTask.erase(deliverTask);
 				being.ChangeState("IdleState");

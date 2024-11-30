@@ -11,23 +11,29 @@ func ExitState() -> void:
 	print(str(being) + " exited the gather state");
 
 func Update() -> void:
-	var gatherTask = being.orderedTask[being.orderedTask.find(func(x): return x.taskType == "Gather")];
+	var gatherTask = being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "Gather")];
 
 	if gatherTask != null:
-		var nearestResourceOfType = being.FindNearestOfResource(gatherTask.resourceType);
+		if gatherTask.target == null:
+			var nearestResourceOfType = being.FindNearestOfResource(gatherTask.resourceType);
 
-		if nearestResourceOfType == null:
-			var newWanderTask = ComplexTask.new().setTaskType("MoveTo").setNoTargetIntPos(clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 19));
-			being.orderedTask.append(newWanderTask);
-			being.ChangeState("IdleState");
+			if nearestResourceOfType == null:
+				var newWanderTask = Task.new().setTaskType("MoveTo").setNoTargetIntPos(clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 19));
+				being.chainedTask.append(newWanderTask);
+				being.ChangeState("IdleState");
+			else:
+				gatherTask.target = nearestResourceOfType;
+				being.ChangeState("IdleState");
 
-		##If not on same position, add move task
-		elif nearestResourceOfType.GetPositionNodeIndex() != being.GetPositionNodeIndex():
-			var newMoveTask = ComplexTask.new().setTaskType("MoveTo").setTarget(nearestResourceOfType);
-			being.orderedTask.append(newMoveTask);
-			being.ChangeState("IdleState");
-		##Else gather it
 		else:
-			being.inventory.append(nearestResourceOfType.GatherResource())
-			being.orderedTask.erase(gatherTask);
-			being.ChangeState("IdleState");
+			##If not on same position, add move task
+			if gatherTask.target.GetPositionNodeIndex() != being.GetPositionNodeIndex():
+				var newMoveTask = Task.new().setTaskType("MoveTo").setTarget(gatherTask.target);
+				being.chainedTask.append(newMoveTask);
+				being.ChangeState("IdleState");
+			##Else gather it
+			else:
+				being.inventory.append(gatherTask.target.GatherResource())
+				gatherTask.status = Task.TaskStatus.COMPLETED;
+				being.chainedTask.erase(gatherTask);
+				being.ChangeState("IdleState");

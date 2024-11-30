@@ -20,6 +20,11 @@ config/icon="res://icon.svg"
 GlobalEvents="*res://scenes/globals/global_events.tscn"
 GameManager="*res://scripts/GameManager.gd"
 
+[display]
+
+window/size/viewport_width=1200
+window/size/viewport_height=540
+
 [dotnet]
 
 project/assembly_name="Judgement Day"

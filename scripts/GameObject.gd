@@ -17,4 +17,5 @@ func GetPositionNodeIndex() -> int:
 	return -1;
 
 func GatherResource() -> String:
+	DestroyObject();
 	return "Food";
