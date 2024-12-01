@@ -1,4 +1,4 @@
-class_name Population;
+class_name Population extends Node2D;
 
 var beings: Array = [];
 
@@ -10,21 +10,24 @@ var townSquare: GameObject:
                 return b;
         return null;
 
-var resources: Dictionary:
-    get:
-        return townSquare.inventory;
+var resources: Dictionary = {"food": 10, "wood": 500}
 
 var taskQueue: Array = [];
 
 # Time management for periodic updates
 var elapsedTime: float = 0.0
-var coolDown: float = 0.2
+var coolDown: float = GameManager.stepDuration;
+
+func _ready() -> void:
+    print("wdff ")
 
 func _process(delta: float) -> void:
+    #print(str(taskQueue.size()));
     elapsedTime += delta
     if elapsedTime >= coolDown:
         elapsedTime = 0.0
         AnalyzeNeeds();
+    
 
 ### Analyze the population's needs and generate tasks
 func AnalyzeNeeds() -> void:
@@ -84,4 +87,4 @@ func CountHouses() -> int:
 
 ############################
 func BuildHouse(position: int):
-    buildings.append(GameManager.CreatNewGameObject("House"));
+    buildings.append(GameManager.CreateNewGameObject("House", position));

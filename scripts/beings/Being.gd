@@ -34,6 +34,8 @@ func _ready() -> void:
 	states["GatherState"] = preload("res://scripts/beings/states/GatherState.gd").new();
 	states["DeliverState"] = preload("res://scripts/beings/states/DeliverState.gd").new();
 	states["MateState"] = preload("res://scripts/beings/states/MateState.gd").new();
+	states["SleepState"] = preload("res://scripts/beings/states/SleepState.gd").new();
+	states["BuildState"] = preload("res://scripts/beings/states/BuildState.gd").new();
 
 	for state: BeingState in states.values():
 		state.being = self;

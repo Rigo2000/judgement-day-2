@@ -24,6 +24,10 @@ func Update():
 			being.ChangeState("DeliverState");
 		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Mate":
 			being.ChangeState("MateState");
+		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Sleep":
+			being.ChangeState("SleepState");
+		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Build":
+			being.ChangeState("BuildState");
 	else:
 		NewTaskLogic();
 		
@@ -34,7 +38,7 @@ func NewTaskLogic():
 		being.chainedTask.append(Task.new().setTaskType("Consume").setResourceType("Food"));
 	
 	elif being.sleep <= 10:
-		being.chainedTask.appen(Task.new().setTaskType("Sleep"));
+		being.chainedTask.append(Task.new().setTaskType("Sleep"));
 
 	else:
 		var populationTask = being.population.GetTask();

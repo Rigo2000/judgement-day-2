@@ -3,6 +3,7 @@ extends Node2D
 var positionScene = preload("res://scenes/positions/position_scene.tscn");
 var gameObjectScene = preload("res://scenes/GameObjects/gameObject_scene.tscn");
 var beingScene = preload("res://scenes/being_scene.tscn");
+var population = preload("res://scenes/GameObjects/population_scene.tscn");
 
 var elapsedTime = 0.0;
 var stepDuration = 0.2;
@@ -60,9 +61,11 @@ func _ready() -> void:
 		SpawnBeings();
 
 func SpawnPopulation():
-	p = Population.new();
+	p = population.instantiate();
+	get_tree().get_root().add_child.call_deferred(p);
 	var newGameObject = GameObject.new();
-	p.buildings["townSquare"] = newGameObject;
+	newGameObject.type = "townSquare";
+	p.buildings.append(newGameObject)
 	positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newGameObject);
 
 func SpawnGameObjects() -> void:

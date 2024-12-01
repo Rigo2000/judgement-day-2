@@ -17,6 +17,6 @@ func Update() -> void:
 
 	if buildTask != null:
 		if countDown <= 0:
-			being.population.AddBuild(being.GetPositionNodeIndex());
+			being.population.BuildHouse(being.GetPositionNodeIndex());
 			being.chainedTask.erase(buildTask);
 			being.ChangeState("IdleState");

@@ -22,3 +22,4 @@ res://quests/Condition.gd
 res://scripts/beings/states/SleepState.gd
 res://scripts/beings/states/BuildState.gd
 res://scripts/beings/population/Population.gd
+res://scenes/GameObjects/population_scene.tscn

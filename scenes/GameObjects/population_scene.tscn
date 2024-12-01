@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bguk1nd1q484y"]
+
+[ext_resource type="Script" path="res://scripts/beings/population/Population.gd" id="1_jjx0x"]
+
+[node name="PopulationScene" type="Node2D"]
+script = ExtResource("1_jjx0x")
