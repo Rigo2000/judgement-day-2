@@ -3,10 +3,18 @@
 [ext_resource type="Script" path="res://scripts/GameObject.gd" id="1_ft4pp"]
 [ext_resource type="Texture2D" uid="uid://bq72t7rmp0if5" path="res://icon.svg" id="2_d7cid"]
 
-[node name="GameObject" type="Node2D"]
+[node name="GameObject" type="Node2D" node_paths=PackedStringArray("label")]
 script = ExtResource("1_ft4pp")
+label = NodePath("Label")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.345098, 1, 0.231373, 1)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_d7cid")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -17.0
+offset_top = -113.0
+offset_right = 23.0
+offset_bottom = -90.0
+text = "TEXT"

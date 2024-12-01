@@ -26,7 +26,10 @@ func Update() -> void:
 				being.chainedTask.append(newMoveTask);
 				being.ChangeState("IdleState");
 			else:
-				deliverTask.target.inventory.append(deliverTask.resourceType);
+				##HACK FOR TOWNNOW TODO
+				deliverTask.target.resources["food"] += 5;
+
+				#deliverTask.target.inventory.append(deliverTask.resourceType);
 				being.inventory.erase(deliverTask.resourceType);
 				being.chainedTask.erase(deliverTask);
 				being.ChangeState("IdleState");

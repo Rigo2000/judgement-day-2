@@ -17,6 +17,12 @@ func Update() -> void:
 		being.chainedTask.append(newMoveTask);
 		being.ChangeState("IdleState");
 	else:
-		being.StartPregnancy();
-		being.chainedTask.erase(mateTask);
-		being.ChangeState("IdleState");
+		print(1)
+		if being.pregnancy == null && mateTask.target.pregnancy == null:
+			print(2)
+			being.StartPregnancy();
+			being.chainedTask.erase(mateTask);
+			being.ChangeState("IdleState");
+		else:
+			being.chainedTask.erase(mateTask);
+			being.ChangeState("IdleState");

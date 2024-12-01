@@ -63,10 +63,6 @@ func _ready() -> void:
 func SpawnPopulation():
 	p = population.instantiate();
 	get_tree().get_root().add_child.call_deferred(p);
-	var newGameObject = GameObject.new();
-	newGameObject.type = "townSquare";
-	p.buildings.append(newGameObject)
-	positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newGameObject);
 
 func SpawnGameObjects() -> void:
 	for n in 4:
@@ -92,6 +88,6 @@ func CreateNewBeing(parentA: Being, parentB: Being = null):
 
 func CreateNewGameObject(type: String, position: int) -> GameObject:
 	var newObject = gameObjectScene.instantiate();
-	newObject.type = "House";
+	newObject.type = type;
 	positionsNode.get_children()[position].add_child(newObject);
 	return newObject;

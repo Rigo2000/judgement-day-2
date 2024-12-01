@@ -54,6 +54,7 @@ func _process(delta: float) -> void:
 
 func UpdateBeingStats():
 	hunger -= 1;
+	sleep -= 1;
 	if pregnancy != null:
 		pregnancy.UpdatePregnancy();
 		if pregnancy.IsCompleted():
@@ -77,6 +78,7 @@ func ChangeState(newState: String) -> void:
 		currentState.EnterState();
 
 func StartPregnancy():
+	print(str(self) + " is preggos");
 	pregnancy = Pregnancy.new();
 
 ##STATEMACHINE HELPERS

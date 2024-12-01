@@ -1,9 +1,15 @@
 class_name GameObject extends Node2D;
 
+@export var label: Label;
 
 var type;
 
 var inventory = [];
+
+var resources = {}
+
+func _ready() -> void:
+	label.text = type;
 
 func DestroyObject() -> void:
 	queue_free();
@@ -18,4 +24,4 @@ func GetPositionNodeIndex() -> int:
 
 func GatherResource() -> String:
 	DestroyObject();
-	return "Food";
+	return type;

@@ -3,14 +3,7 @@ class_name Population extends Node2D;
 var beings: Array = [];
 
 var buildings: Array = [];
-var townSquare: GameObject:
-    get:
-        for b in buildings:
-            if b.type == "townSquare":
-                return b;
-        return null;
-
-var resources: Dictionary = {"food": 10, "wood": 500}
+var townSquare: GameObject;
 
 var taskQueue: Array = [];
 
@@ -18,6 +11,10 @@ var taskQueue: Array = [];
 var elapsedTime: float = 0.0
 var coolDown: float = GameManager.stepDuration;
 
+func _ready() -> void:
+    BuildTownSquare(50);
+
+    townSquare.resources = {"food": 0, "wood": 500}
 
 func _process(delta: float) -> void:
     #print(str(taskQueue.size()));
@@ -30,12 +27,12 @@ func _process(delta: float) -> void:
 ### Analyze the population's needs and generate tasks
 func AnalyzeNeeds() -> void:
     # Check if food is critically low
-    if resources.has("food") and resources["food"] < 20:
-        CreateTask("Gather", "Food", townSquare);
+    if townSquare.resources.has("food") and townSquare.resources["food"] < 20:
+        CreateTask("Deliver", "Food", townSquare);
 
     # Check if wood is critically low
-    if resources.has("wood") and resources["wood"] < 50:
-        CreateTask("Gather", "Wood", townSquare);
+    if townSquare.resources.has("wood") and townSquare.resources["wood"] < 50:
+        CreateTask("Deliver", "Wood", townSquare);
 
     # Check for housing needs
     if CountHouses() < beings.size():
@@ -84,5 +81,10 @@ func CountHouses() -> int:
     return houseCount
 
 ############################
-func BuildHouse(position: int):
-    buildings.append(GameManager.CreateNewGameObject("House", position));
+func BuildHouse(_position: int):
+    buildings.append(GameManager.CreateNewGameObject("House", _position));
+
+func BuildTownSquare(_position: int):
+    townSquare = GameManager.CreateNewGameObject("TownSquare", _position)
+    buildings.append(townSquare);
+    print(townSquare.type);
