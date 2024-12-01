@@ -5,10 +5,11 @@ var coolDown = 1.0;
 
 func EnterState() -> void:
 	timeElapsed = 0.0;
-	print(str(being) + " entered idle state");
+	#print(str(being) + " entered idle state");
 
 func ExitState() -> void:
-	print(str(being) + " exited idle state");
+	pass ;
+	#print(str(being) + " exited idle state");
 
 
 func Update():
@@ -29,9 +30,12 @@ func Update():
 
 func NewTaskLogic():
 	being.chainedTask.clear();
-	if being.hunger <= 80:
+	if being.hunger <= 10:
 		being.chainedTask.append(Task.new().setTaskType("Consume").setResourceType("Food"));
 	
+	elif being.sleep <= 10:
+		being.chainedTask.appen(Task.new().setTaskType("Sleep"));
+
 	else:
 		var populationTask = being.population.GetTask();
 
@@ -55,7 +59,7 @@ func GetWanderTask() -> Task:
 	return Task.new().setTaskType("MoveTo").setNoTargetIntPos(randomPos);
 
 func GetMateTask() -> Task:
-	print(being.population.beings.size())
+	#print(being.population.beings.size())
 
 	being.chainedTask.clear();
 

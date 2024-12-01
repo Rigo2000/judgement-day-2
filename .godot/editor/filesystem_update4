@@ -17,3 +17,8 @@ res://quests/QuestManager.gd
 res://scripts/beings/states/EatState.gd
 res://scripts/beings/states/DeliverState.gd
 res://scripts/beings/states/MateState.gd
+res://scripts/beings/Pregnancy.gd
+res://quests/Condition.gd
+res://scripts/beings/states/SleepState.gd
+res://scripts/beings/states/BuildState.gd
+res://scripts/beings/population/Population.gd

@@ -1,11 +1,13 @@
 extends BeingState;
 
 func EnterState() -> void:
-	print(str(being) + " entered mate state ")
+	pass ;
+	#print(str(being) + " entered mate state ")
 	
 
 func ExitState() -> void:
-	print(str(being) + " exited mate state ")
+	pass ;
+	#print(str(being) + " exited mate state ")
 
 func Update() -> void:
 	var mateTask: Task = being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "Mate")];

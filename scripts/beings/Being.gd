@@ -105,7 +105,7 @@ func FindNearestOfResource(resourceType: String) -> GameObject:
 		
 	##IF POS WITH FOOD, MOVE TOWARDS	
 	if targetObj != null:
-		print("targertobject is " + str(targetObj))
+		#print("targertobject is " + str(targetObj))
 
 		return targetObj;
 	else:

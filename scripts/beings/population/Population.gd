@@ -2,14 +2,17 @@ class_name Population;
 
 var beings: Array = [];
 
-var buildings: Dictionary;
+var buildings: Array = [];
 var townSquare: GameObject:
     get:
-       return buildings["townSquare"];
+        for b in buildings:
+            if b.type == "townSquare":
+                return b;
+        return null;
 
 var resources: Dictionary:
     get:
-        return buildings["townSquare"].inventory;
+        return townSquare.inventory;
 
 var taskQueue: Array = [];
 
@@ -74,7 +77,11 @@ func CleanupTasks() -> void:
 ### Count the number of houses in the population
 func CountHouses() -> int:
     var houseCount = 0
-    for building in buildings.values():
+    for building in buildings:
         if building.type == "House":
             houseCount += 1
     return houseCount
+
+############################
+func BuildHouse(position: int):
+    buildings.append(GameManager.CreatNewGameObject("House"));

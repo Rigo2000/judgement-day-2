@@ -14,7 +14,7 @@ func CreateNewQuest(being: Being, conditions: Array[Condition]) -> void:
 	newQuest.conditions = conditions;
 	newQuest.status = Quest.Status.active;
 	activeQuests.add_child(newQuest);
-	print(newQuest.GetQuestString())
+	#print(newQuest.GetQuestString())
 
 func _ready() -> void:
 	GlobalEvents.connect("beingUpdate", OnBeingUpdate);
@@ -23,7 +23,7 @@ func OnBeingUpdate(gameEvent: GameEvent) -> void:
 	if !activeQuests.get_child_count() <= 0:
 		for quest: Quest in activeQuests.get_children():
 			for condition in quest.conditions:
-				#print("Condition Target: " + str(condition.target) + " gameEvent.target " + str(gameEvent.target))
+				##print("Condition Target: " + str(condition.target) + " gameEvent.target " + str(gameEvent.target))
 				if condition.target == gameEvent.target:
 					condition.HandleGameEvent(gameEvent);
 		

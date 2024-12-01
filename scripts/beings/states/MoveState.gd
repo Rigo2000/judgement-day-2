@@ -4,12 +4,13 @@ extends BeingState
 var arrived: bool = false
 ##A target is a gameobject, like a foodtype or a being
 func EnterState():
-	print(str(being) + " entered the move state")
+	#print(str(being) + " entered the move state")
 	arrived = false
-	print(being.name, " is moving to: " + str(being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "MoveTo")].target));
+	#print(being.name, " is moving to: " + str(being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "MoveTo")].target));
 
 func ExitState():
-	print(str(being) + " exited the move state")
+	pass;
+	#print(str(being) + " exited the move state")
 
 func Update():
 	var moveTask = being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "MoveTo")];

@@ -34,8 +34,6 @@ var labelNode: Label:
 
 func _process(delta):
 	elapsedTime += delta;
-
-
 	UpdateHud();
 
 	if elapsedTime >= stepDuration:
@@ -80,7 +78,7 @@ func SpawnBeings() -> void:
 		positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newBeing);
 		p.beings.append(newBeing);
 
-	print(p.beings.size())
+	#print(p.beings.size())
 
 func CreateNewBeing(parentA: Being, parentB: Being = null):
 	##at some point parents will influence how the child becomes
@@ -88,3 +86,9 @@ func CreateNewBeing(parentA: Being, parentB: Being = null):
 		newBeing.population = parentA.population;
 		positionsNode.get_children()[parentA.GetPositionNodeIndex()].add_child(newBeing);
 		p.beings.append(newBeing);
+
+func CreateNewGameObject(type: String, position: int) -> GameObject:
+	var newObject = gameObjectScene.instantiate();
+	newObject.type = "House";
+	positionsNode.get_children()[position].add_child(newObject);
+	return newObject;

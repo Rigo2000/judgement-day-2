@@ -5,10 +5,11 @@ var actionsPerResource: int = 4;
 
 func EnterState() -> void:
 	count = 0;
-	print(str(being) + " entered the deliver state")
+	#print(str(being) + " entered the deliver state")
 	
 func ExitState() -> void:
-	print(str(being) + " exited the deliver state");
+	pass ;
+	#print(str(being) + " exited the deliver state");
 
 func Update() -> void:
 	var deliverTask: Task = being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "Deliver")];
