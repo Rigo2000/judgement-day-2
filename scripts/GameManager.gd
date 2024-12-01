@@ -9,6 +9,8 @@ var coolDown = 10.0;
 
 var p: Population;
 
+var selectedBeing: Being;
+
 var qm: QuestManager:
 	get:
 		if qm == null:
@@ -22,13 +24,25 @@ var positionsNode: Node2D:
 			positionsNode = get_tree().get_first_node_in_group("PositionsNode");
 		return positionsNode;
 
+var labelNode: Label:
+	get:
+		if labelNode == null:
+			labelNode = get_tree().get_first_node_in_group("LabelNode");
+		return labelNode;
+
 func _process(delta):
 	elapsedTime += delta;
+
+	UpdateHud();
 
 	if elapsedTime >= coolDown:
 		elapsedTime = 0.0;
 		SpawnGameObjects();
-
+	
+		
+func UpdateHud():
+	if selectedBeing != null:
+		labelNode.text = selectedBeing.UpdateBeingLabel();
 
 func _ready() -> void:
 	if true:

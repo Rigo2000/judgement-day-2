@@ -24,3 +24,20 @@ func setResourceType(_resourceType: String) -> Task:
 func setNoTargetIntPos(_intPosTarget: int) -> Task:
     noTargetIntPos = _intPosTarget
     return self
+
+func GetTaskString() -> String:
+    var newString = "";
+
+    if taskType != null:
+        newString += str(taskType) + " ";
+    
+    if resourceType != null:
+        newString += str(resourceType) + " ";
+    
+    if target != null:
+        newString += str(target) + " ";
+    
+    if noTargetIntPos != null:
+        newString += str(noTargetIntPos);
+
+    return newString;

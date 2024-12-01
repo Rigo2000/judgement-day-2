@@ -47,19 +47,24 @@ func _process(delta: float) -> void:
 		elapsedTime = 0.0;
 
 		UpdateBeingStats();
-
 		if currentState:
 			currentState.Update();
 
 func UpdateBeingStats():
 	hunger -= 1;
-
-
 	if pregnancy != null:
 		pregnancy.UpdatePregnancy();
 		if pregnancy.IsCompleted():
 			GameManager.CreateNewBeing(self);
 			pregnancy = null;
+
+func UpdateBeingLabel() -> String:
+	var newString;
+
+	for t: Task in chainedTask:
+		newString += "/n" + t.GetTaskString();
+
+	return newString;
 
 func ChangeState(newState: String) -> void:
 	if currentState:
@@ -105,3 +110,10 @@ func FindNearestOfResource(resourceType: String) -> GameObject:
 		return targetObj;
 	else:
 		return null;
+
+func SelectBeing():
+	GameManager.selectedBeing = self;
+
+
+func _on_button_pressed() -> void:
+	SelectBeing();
