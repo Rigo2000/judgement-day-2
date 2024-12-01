@@ -18,8 +18,6 @@ var taskQueue: Array = [];
 var elapsedTime: float = 0.0
 var coolDown: float = GameManager.stepDuration;
 
-func _ready() -> void:
-    print("wdff ")
 
 func _process(delta: float) -> void:
     #print(str(taskQueue.size()));

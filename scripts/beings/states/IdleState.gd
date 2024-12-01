@@ -11,23 +11,23 @@ func ExitState() -> void:
 	pass ;
 	#print(str(being) + " exited idle state");
 
-
 func Update():
 	if being.chainedTask.size() > 0:
-		if being.chainedTask[being.chainedTask.size() - 1].taskType == "MoveTo":
-			being.ChangeState("MoveState");
-		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Consume":
-			being.ChangeState("EatState");
-		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Gather":
-			being.ChangeState("GatherState");
-		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Deliver":
-			being.ChangeState("DeliverState");
-		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Mate":
-			being.ChangeState("MateState");
-		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Sleep":
-			being.ChangeState("SleepState");
-		if being.chainedTask[being.chainedTask.size() - 1].taskType == "Build":
-			being.ChangeState("BuildState");
+		if (being.chainedTask[being.chainedTask.size() - 1] != null):
+			if being.chainedTask[being.chainedTask.size() - 1].taskType == "MoveTo":
+				being.ChangeState("MoveState");
+			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Consume":
+				being.ChangeState("EatState");
+			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Gather":
+				being.ChangeState("GatherState");
+			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Deliver":
+				being.ChangeState("DeliverState");
+			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Mate":
+				being.ChangeState("MateState");
+			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Sleep":
+				being.ChangeState("SleepState");
+			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Build":
+				being.ChangeState("BuildState");
 	else:
 		NewTaskLogic();
 		
@@ -44,7 +44,7 @@ func NewTaskLogic():
 		var populationTask = being.population.GetTask();
 
 		if populationTask != null:
-			being.chainedTask.append(being.population.GetTask());
+			being.chainedTask.append(populationTask);
 		else:
 			##Do idle tasks like pray, wander, mate
 			##Based somewhat on personality
