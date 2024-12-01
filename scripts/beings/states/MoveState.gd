@@ -15,19 +15,24 @@ func Update():
 	var moveTask = being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "MoveTo")];
 
 	if moveTask != null:
-		var targetPos;
+		var targetPos = -1;
 
 		if moveTask.target != null:
 			targetPos = moveTask.target.GetPositionNodeIndex();
-		elif moveTask.target == null && moveTask.noTargetIntPos != 1:
+		elif moveTask.target == null && moveTask.noTargetIntPos != -1:
 			targetPos = moveTask.noTargetIntPos;
+		elif moveTask.target == null && moveTask.noTargetIntPos == -1:
+			being.chainedTask.erase(moveTask);
+			being.ChangeState("IdleState");
 
-		if targetPos > being.GetPositionNodeIndex():
-			MovePosition(1);
-		elif targetPos < being.GetPositionNodeIndex():
-			MovePosition(-1);
-		elif targetPos == being.GetPositionNodeIndex():
-			arrived = true;
+		if targetPos != -1:
+
+			if targetPos > being.GetPositionNodeIndex():
+				MovePosition(1);
+			elif targetPos < being.GetPositionNodeIndex():
+				MovePosition(-1);
+			elif targetPos == being.GetPositionNodeIndex():
+				arrived = true;
 
 		if arrived:
 			being.chainedTask.erase(moveTask);

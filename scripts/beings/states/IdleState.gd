@@ -50,7 +50,7 @@ func NewTaskLogic():
 func GetWanderTask() -> Task:
 	being.chainedTask.clear();
 	##Get a random position near being
-	var randomPos: int = clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 19);
+	var randomPos: int = clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 99);
 	##TODO: Fix the wander task
 	return Task.new().setTaskType("MoveTo").setNoTargetIntPos(randomPos);
 

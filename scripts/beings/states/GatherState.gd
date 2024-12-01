@@ -16,12 +16,14 @@ func Update() -> void:
 	if gatherTask != null:
 		if gatherTask.target == null:
 			var nearestResourceOfType = being.FindNearestOfResource(gatherTask.resourceType);
-
+			print(gatherTask.resourceType)
 			if nearestResourceOfType == null:
-				var newWanderTask = Task.new().setTaskType("MoveTo").setNoTargetIntPos(clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 19));
+				print(1)
+				var newWanderTask = Task.new().setTaskType("MoveTo").setNoTargetIntPos(clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 99));
 				being.chainedTask.append(newWanderTask);
 				being.ChangeState("IdleState");
 			else:
+				print(2)
 				gatherTask.target = nearestResourceOfType;
 				being.ChangeState("IdleState");
 

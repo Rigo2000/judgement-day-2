@@ -6,3 +6,14 @@ res://scenes/positions/position_scene.tscn
 res://scenes/GameObjects/gameObject_scene.tscn
 res://scripts/beings/Being.gd
 res://scripts/GameManager.gd
+res://scripts/beings/states/MoveState.gd
+res://scripts/beings/states/BeingState.gd
+res://scripts/utilities/CameraMovement.gd
+res://scripts/beings/states/IdleState.gd
+res://scripts/beings/states/GatherState.gd
+res://scripts/beings/states/PrayState.gd
+res://quests/Quest.gd
+res://quests/QuestManager.gd
+res://scripts/beings/states/EatState.gd
+res://scripts/beings/states/DeliverState.gd
+res://scripts/beings/states/MateState.gd

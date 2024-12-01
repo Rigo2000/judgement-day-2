@@ -14,7 +14,7 @@ var currentState: BeingState = null;
 var states = {};
 
 var reach: int = 0;
-var viewDistance: int = 5;
+var viewDistance: int = 10;
 
 var pos: int:
 	get:
@@ -22,7 +22,7 @@ var pos: int:
 
 var chainedTask = [];
 		
-var coolDown: float = 0.2;
+var coolDown: float = GameManager.stepDuration;
 var elapsedTime;
 
 func _ready() -> void:
@@ -59,10 +59,10 @@ func UpdateBeingStats():
 			pregnancy = null;
 
 func UpdateBeingLabel() -> String:
-	var newString;
+	var newString = "";
 
 	for t: Task in chainedTask:
-		newString += "/n" + t.GetTaskString();
+		newString += "\n" + t.GetTaskString();
 
 	return newString;
 
@@ -80,8 +80,8 @@ func StartPregnancy():
 ##STATEMACHINE HELPERS
 func FindNearestOfResource(resourceType: String) -> GameObject:
 	##FIND FOOD SOURCE
-	var minPos = clampi(GetPositionNodeIndex() - viewDistance, 0, 19);
-	var maxPos = clampi(GetPositionNodeIndex() + viewDistance, 0, 19);
+	var minPos = clampi(GetPositionNodeIndex() - viewDistance, 0, 99);
+	var maxPos = clampi(GetPositionNodeIndex() + viewDistance, 0, 99);
 
 	var objectsOfTypeInView = []
 

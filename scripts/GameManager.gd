@@ -5,7 +5,9 @@ var gameObjectScene = preload("res://scenes/GameObjects/gameObject_scene.tscn");
 var beingScene = preload("res://scenes/being_scene.tscn");
 
 var elapsedTime = 0.0;
-var coolDown = 10.0;
+var stepDuration = 0.2;
+
+var spawnCooldDown = 1;
 
 var p: Population;
 
@@ -33,23 +35,27 @@ var labelNode: Label:
 func _process(delta):
 	elapsedTime += delta;
 
+
 	UpdateHud();
 
-	if elapsedTime >= coolDown:
+	if elapsedTime >= stepDuration:
+		spawnCooldDown += 1;
 		elapsedTime = 0.0;
-		SpawnGameObjects();
+		if spawnCooldDown >= 10:
+			spawnCooldDown = 0;
+			SpawnGameObjects();
 	
-		
+	
 func UpdateHud():
 	if selectedBeing != null:
 		labelNode.text = selectedBeing.UpdateBeingLabel();
 
 func _ready() -> void:
 	if true:
-		for n in 20:
+		for n in 100:
 			var newPosition: Node2D = positionScene.instantiate()
 			positionsNode.add_child(newPosition);
-			newPosition.position = Vector2(50 + n * 100, 200)
+			newPosition.position = Vector2(n * 20, 200)
 
 		SpawnPopulation();
 		SpawnGameObjects();
