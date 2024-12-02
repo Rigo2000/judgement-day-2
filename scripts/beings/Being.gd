@@ -6,6 +6,8 @@ var age: int;
 var sleep: int;
 var devotion: int;
 
+var data: BeingData;
+
 var pregnancy;
 
 var population: Population;
