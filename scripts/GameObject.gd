@@ -4,15 +4,20 @@ class_name GameObject extends Node2D;
 
 var type;
 
-var inventory = [];
-
 var resources = {}
 
 func _ready() -> void:
 	label.text = type;
 
 func DestroyObject() -> void:
-	queue_free();
+	var isEmpty:bool = true;
+
+	for r in resources.values():
+		if r > 0:
+			isEmpty = false;
+
+	if isEmpty:
+		queue_free();
 
 func GetPositionNodeIndex() -> int:
 	for p in GameManager.positionsNode.get_children():
@@ -22,6 +27,12 @@ func GetPositionNodeIndex() -> int:
 	
 	return -1;
 
-func GatherResource() -> String:
+func GatherResource(_type: String) -> String:
 	DestroyObject();
 	return type;
+
+func AddToResources(_type: String, _amount: int):
+	if resources.has(_type):
+		resources[_type] += _amount;
+	else:
+		resources[_type] = _amount;

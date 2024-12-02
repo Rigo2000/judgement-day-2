@@ -8,6 +8,8 @@ var resourceType: String
 var noTargetIntPos: int = -1
 var status: TaskStatus = TaskStatus.AVAILABLE
 
+var attempts;
+
 # Fluent setters
 func setTarget(_target: GameObject) -> Task:
     target = _target

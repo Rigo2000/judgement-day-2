@@ -26,3 +26,4 @@ res://scenes/GameObjects/population_scene.tscn
 res://scripts/GameObject.gd
 res://scripts/beings/BeingsData.gd
 res://scripts/beings/BeingData.gd
+res://scripts/beings/states/Task.gd

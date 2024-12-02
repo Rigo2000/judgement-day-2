@@ -12,8 +12,8 @@ func Update() -> void:
 	var consumeTask: Task = being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "Consume")];
 
 	if consumeTask != null:
-		if (being.inventory.has(consumeTask.resourceType)):
-			being.inventory.erase(consumeTask.resourceType);
+		if (being.resources.has(consumeTask.resourceType)):
+			being.resources[consumeTask.resourceType] = 0;
 			being.hunger += 100;
 			#print(str(being) + " eats " + consumeTask.resourceType + " and hunger is now " + str(being.hunger));
 			being.chainedTask.erase(consumeTask);
