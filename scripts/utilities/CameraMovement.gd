@@ -14,9 +14,11 @@ func _process(delta):
 
     # Check edges
     if mouse_pos.x <= edge_threshold:
-        movement.x -= 1 # Move left
+        if global_position.x > 100:
+            movement.x -= 1 # Move left
     elif mouse_pos.x >= viewport_size.x - edge_threshold:
-        movement.x += 1 # Move right
+        if global_position.x < 1500:
+            movement.x += 1 # Move right
 
     # Apply movement
     if movement != Vector2.ZERO:

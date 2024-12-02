@@ -50,7 +50,7 @@ func _process(delta):
 	if elapsedTime >= stepDuration:
 		spawnCooldDown += 1;
 		elapsedTime = 0.0;
-		if spawnCooldDown >= 10:
+		if spawnCooldDown >= 60:
 			spawnCooldDown = 0;
 			SpawnGameObjects();
 		dayProgression += 1;
