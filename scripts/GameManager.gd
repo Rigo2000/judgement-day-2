@@ -3,14 +3,18 @@ extends Node2D
 var positionScene = preload("res://scenes/positions/position_scene.tscn");
 var gameObjectScene = preload("res://scenes/GameObjects/gameObject_scene.tscn");
 var beingScene = preload("res://scenes/being_scene.tscn");
-var population = preload("res://scenes/GameObjects/population_scene.tscn");
+var populationScene = preload("res://scenes/GameObjects/population_scene.tscn");
 
 var elapsedTime = 0.0;
 var stepDuration = 0.2;
 
+var dayLength = 60;
+var dayProgression = 0;
+var day = 0;
+
 var spawnCooldDown = 1;
 
-var p: Population;
+var population: Population;
 
 var selectedBeing: Being;
 
@@ -33,6 +37,12 @@ var labelNode: Label:
 			labelNode = get_tree().get_first_node_in_group("LabelNode");
 		return labelNode;
 
+var gameDataLabel: Label:
+	get:
+		if gameDataLabel == null:
+			gameDataLabel = get_tree().get_first_node_in_group("GameDataLabel");
+		return gameDataLabel;
+
 func _process(delta):
 	elapsedTime += delta;
 	UpdateHud();
@@ -43,11 +53,22 @@ func _process(delta):
 		if spawnCooldDown >= 10:
 			spawnCooldDown = 0;
 			SpawnGameObjects();
-	
+		dayProgression += 1;
+		if dayProgression >= dayLength:
+			dayProgression = 0;
+			day += 1;
+			
 	
 func UpdateHud():
 	if selectedBeing != null:
 		labelNode.text = selectedBeing.UpdateBeingLabel();
+	
+	var gameDataString = "";
+	gameDataString += "Day: " + str(day);
+	gameDataString += "\nBeings: " + str(population.beings.size());
+
+	gameDataLabel.text = gameDataString;
+
 
 func _ready() -> void:
 	if true:
@@ -61,8 +82,8 @@ func _ready() -> void:
 		SpawnBeings();
 
 func SpawnPopulation():
-	p = population.instantiate();
-	get_tree().get_root().add_child.call_deferred(p);
+	population = populationScene.instantiate();
+	get_tree().get_root().add_child.call_deferred(population);
 
 func SpawnGameObjects() -> void:
 	for n in 4:
@@ -73,9 +94,10 @@ func SpawnGameObjects() -> void:
 func SpawnBeings() -> void:
 	for n in 2:
 		var newBeing = beingScene.instantiate();
-		newBeing.population = p;
+		newBeing.population = population;
 		positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newBeing);
-		p.beings.append(newBeing);
+		population.beings.append(newBeing);
+		newBeing.birthday = day;
 
 	#print(p.beings.size())
 
@@ -84,7 +106,8 @@ func CreateNewBeing(parentA: Being, parentB: Being = null):
 		var newBeing = beingScene.instantiate();
 		newBeing.population = parentA.population;
 		positionsNode.get_children()[parentA.GetPositionNodeIndex()].add_child(newBeing);
-		p.beings.append(newBeing);
+		population.beings.append(newBeing);
+		newBeing.birthday = day;
 
 func CreateNewGameObject(type: String, position: int) -> GameObject:
 	var newObject = gameObjectScene.instantiate();

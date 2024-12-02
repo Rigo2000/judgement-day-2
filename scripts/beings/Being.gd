@@ -16,6 +16,12 @@ var states = {};
 var reach: int = 0;
 var viewDistance: int = 10;
 
+var birthday: int;
+
+var ageInDays: int:
+	get:
+		return GameManager.day - birthday;
+
 var pos: int:
 	get:
 		return GetPositionNodeIndex();
@@ -63,6 +69,10 @@ func UpdateBeingStats():
 
 func UpdateBeingLabel() -> String:
 	var newString = "";
+	newString += "Age: " + str(ageInDays);
+	newString += "\n Hunger:" + str(hunger)
+	newString += "\n Sleep:" + str(sleep);
+
 
 	for t: Task in chainedTask:
 		newString += "\n" + t.GetTaskString();

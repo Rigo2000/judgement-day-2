@@ -46,11 +46,12 @@ func NewTaskLogic():
 		if populationTask != null:
 			being.chainedTask.append(populationTask);
 		else:
-			##Do idle tasks like pray, wander, mate
-			##Based somewhat on personality
-			var mateTask = GetMateTask();
-			if mateTask != null:
-				being.chainedTask.append(mateTask);
+			if being.ageInDays > 13 && being.pregnancy == null:
+				##Do idle tasks like pray, wander, mate
+				##Based somewhat on personality
+				var mateTask = GetMateTask();
+				if mateTask != null:
+					being.chainedTask.append(mateTask);
 			else:
 				being.chainedTask.append(GetWanderTask());
 			
@@ -69,7 +70,7 @@ func GetMateTask() -> Task:
 
 	var randomBeingInPopulation = being.population.beings[randi_range(0, being.population.beings.size() - 1)];
 	var tries = 0;
-	while randomBeingInPopulation == being && randomBeingInPopulation.pregnancy != null:
+	while randomBeingInPopulation == being || randomBeingInPopulation.pregnancy != null || randomBeingInPopulation.ageInDays < 13:
 		tries += 1;
 		if tries > 50:
 			break ;
