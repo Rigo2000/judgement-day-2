@@ -4,22 +4,25 @@ class_name GameObject extends Node2D;
 
 var type;
 
-var health: int:
-	set(amount):
-		health = clamp(health + amount, 0, 100);
-	get:
-		return health;
+var health: int;
 
 var resources = {}
+
+func ChangeHealth(amount: int):
+	health = clamp(health + amount, 0, 100);
+	
 
 func _process(delta: float) -> void:
 	DestroyObjectCheck();
 
 func _ready() -> void:
 	label.text = type;
+	health = 100;
 
 func DestroyObjectCheck() -> void:
+	
 	if health <= 0:
+		print("ad")
 		queue_free();
 
 func GetPositionNodeIndex() -> int:

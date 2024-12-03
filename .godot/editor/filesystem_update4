@@ -20,3 +20,4 @@ res://scripts/beings/population/Population.gd
 res://scripts/beings/states/Tasks/Task.gd
 res://scripts/beings/states/BuildState.gd
 res://scripts/utilities/GameObjects/Building.gd
+res://scenes/GameObjects/consumable_scene.tscn

@@ -9,7 +9,7 @@ font_size = 20
 [node name="Main" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(738, 264)
+position = Vector2(733, 168)
 script = ExtResource("1_bnq4x")
 
 [node name="Control" type="Control" parent="Camera2D"]

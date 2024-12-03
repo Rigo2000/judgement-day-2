@@ -4,6 +4,7 @@ var positionScene = preload("res://scenes/positions/position_scene.tscn");
 var gameObjectScene = preload("res://scenes/GameObjects/gameObject_scene.tscn");
 var beingScene = preload("res://scenes/being_scene.tscn");
 var populationScene = preload("res://scenes/GameObjects/population_scene.tscn");
+var consumableScene = preload("res://scenes/GameObjects/consumable_scene.tscn");
 
 var elapsedTime = 0.0;
 var stepDuration = 0.2;
@@ -50,7 +51,7 @@ func _process(delta):
 	if elapsedTime >= stepDuration:
 		spawnCooldDown += 1;
 		elapsedTime = 0.0;
-		if spawnCooldDown >= 60:
+		if spawnCooldDown >= 500:
 			spawnCooldDown = 0;
 			SpawnGameObjects();
 		dayProgression += 1;
@@ -86,13 +87,14 @@ func SpawnPopulation():
 	get_tree().get_root().add_child.call_deferred(population);
 
 func SpawnGameObjects() -> void:
-	for n in 50:
-		var newGameObject = gameObjectScene.instantiate();
-		newGameObject.type = "";
+	for n in 10:
+		var newGameObject = consumableScene.instantiate();
 		if randf() > 0.5:
 			newGameObject.AddToResources(ResourceData.new("Food", 10));
+			newGameObject.type = "Food"
 		else:
 			newGameObject.AddToResources(ResourceData.new("Wood", 10));
+			newGameObject.type = "Wood"
 		positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newGameObject);
 
 func SpawnBeings() -> void:
@@ -102,6 +104,7 @@ func SpawnBeings() -> void:
 		positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newBeing);
 		population.beings.append(newBeing);
 		newBeing.birthday = day;
+		newBeing.type = "Being";
 
 	#print(p.beings.size())
 
@@ -112,6 +115,7 @@ func CreateNewBeing(parentA: Being, parentB: Being = null):
 		positionsNode.get_children()[parentA.GetPositionNodeIndex()].add_child(newBeing);
 		population.beings.append(newBeing);
 		newBeing.birthday = day;
+		newBeing.type = "Being"
 
 func CreateNewGameObject(type: String, position: int) -> GameObject:
 	var newObject = gameObjectScene.instantiate();
