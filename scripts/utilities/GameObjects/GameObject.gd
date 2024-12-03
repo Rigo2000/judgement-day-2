@@ -22,7 +22,6 @@ func _ready() -> void:
 func DestroyObjectCheck() -> void:
 	
 	if health <= 0:
-		print("ad")
 		queue_free();
 
 func GetPositionNodeIndex() -> int:
