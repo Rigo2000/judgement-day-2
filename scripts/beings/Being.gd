@@ -51,6 +51,14 @@ func _ready() -> void:
 
 	ChangeState("IdleState");
 
+func TakeFromResources(_rData: ResourceData) -> ResourceData:
+	if resources.has(_rData.type):
+		if resources[_rData.type] - _rData.amount > 0:
+			return ResourceData.new(_rData.type, _rData.amount);
+		else:
+			return ResourceData.new(_rData.type, resources[_rData.type]);
+	else:
+		return ResourceData.new("", 0);
 
 func _process(delta: float) -> void:
 	elapsedTime += delta;
