@@ -17,18 +17,25 @@ func Update() -> void:
 
 	if buildTask != null:
 
-		if building == null:
-			##TODO: Should have better logic for building placement
-			building = being.population.BuildHouse(being.GetPositionNodeIndex());
-
-		if building.health < 100:
-			print("Building Started")
-			if building.resources.has("Wood"):
-				building.health += building.TakeFromResources(ResourceData.new("Wood", 10)).amount;
+		if buildTask.target != null:
+			print("sadfs")
+			if buildTask.target.health < 100:
+				print(buildTask.target.health)
+				if buildTask.target.resources.has("Wood"):
+					print("23")
+					buildTask.target.ChangeHealth(buildTask.target.TakeFromResources(ResourceData.new("Wood", 20)).amount)
+					print("building health: " + str(buildTask.target.health));
+				else:
+					print("#")
+					being.population.CreateTask("Deliver", "Wood", buildTask.target);
+					being.chainedTask.erase(buildTask);
+					being.ChangeState("IdleState");
 			else:
-				being.population.CreateTask("Deliver", "Wood", building);
+				print("building finished")
 				being.chainedTask.erase(buildTask);
 				being.ChangeState("IdleState");
 		else:
-			being.chainedTask.erase(buildTask);
-			being.ChangeState("IdleState");
+			print("building started")
+			
+			buildTask.target = being.population.BuildHouse(being.GetPositionNodeIndex());
+			print(str(buildTask.target.health))

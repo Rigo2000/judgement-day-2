@@ -5,6 +5,7 @@ var gameObjectScene = preload("res://scenes/GameObjects/gameObject_scene.tscn");
 var beingScene = preload("res://scenes/being_scene.tscn");
 var populationScene = preload("res://scenes/GameObjects/population_scene.tscn");
 var consumableScene = preload("res://scenes/GameObjects/consumable_scene.tscn");
+var buildingScene = preload("res://scenes/GameObjects/building_scene.tscn");
 
 var elapsedTime = 0.0;
 var stepDuration = 0.2;
@@ -51,7 +52,7 @@ func _process(delta):
 	if elapsedTime >= stepDuration:
 		spawnCooldDown += 1;
 		elapsedTime = 0.0;
-		if spawnCooldDown >= 500:
+		if spawnCooldDown >= 60:
 			spawnCooldDown = 0;
 			SpawnGameObjects();
 		dayProgression += 1;
@@ -87,13 +88,13 @@ func SpawnPopulation():
 	get_tree().get_root().add_child.call_deferred(population);
 
 func SpawnGameObjects() -> void:
-	for n in 10:
+	for n in 5:
 		var newGameObject = consumableScene.instantiate();
 		if randf() > 0.5:
-			newGameObject.AddToResources(ResourceData.new("Food", 10));
+			newGameObject.AddToResources(ResourceData.new("Food", 50));
 			newGameObject.type = "Food"
 		else:
-			newGameObject.AddToResources(ResourceData.new("Wood", 10));
+			newGameObject.AddToResources(ResourceData.new("Wood", 50));
 			newGameObject.type = "Wood"
 		positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newGameObject);
 
@@ -118,7 +119,17 @@ func CreateNewBeing(parentA: Being, parentB: Being = null):
 		newBeing.type = "Being"
 
 func CreateNewGameObject(type: String, position: int) -> GameObject:
-	var newObject = gameObjectScene.instantiate();
-	newObject.type = type;
-	positionsNode.get_children()[position].add_child(newObject);
-	return newObject;
+	var newGameObject;
+
+	match type:
+		"House":
+			newGameObject = buildingScene.instantiate();
+			newGameObject.type = type;
+			
+		"TownSquare":
+			newGameObject = buildingScene.instantiate();
+			newGameObject.type = type;
+	
+	positionsNode.get_children()[position].add_child(newGameObject);
+
+	return newGameObject;

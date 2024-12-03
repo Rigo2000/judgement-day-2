@@ -15,7 +15,7 @@ var currentState: BeingState = null;
 var states = {};
 
 var reach: int = 0;
-var viewDistance: int = 10;
+var viewDistance: int = 20;
 
 var birthday: int;
 

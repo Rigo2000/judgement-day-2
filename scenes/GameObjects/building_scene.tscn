@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://d7lwwj3biy25"]
+
+[ext_resource type="Script" path="res://scripts/utilities/GameObjects/Building.gd" id="1_frf5b"]
+[ext_resource type="Texture2D" uid="uid://bq72t7rmp0if5" path="res://icon.svg" id="2_tk7ud"]
+
+[node name="Building" type="Node2D" node_paths=PackedStringArray("label")]
+script = ExtResource("1_frf5b")
+label = NodePath("Label")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.865399, 0.349976, 0, 1)
+position = Vector2(0, -11)
+scale = Vector2(0.2, 0.445)
+texture = ExtResource("2_tk7ud")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -17.0
+offset_top = -113.0
+offset_right = 23.0
+offset_bottom = -90.0
+text = "TEXT"

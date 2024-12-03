@@ -44,7 +44,7 @@ func GetTaskString() -> String:
     if target != null:
         newString += str(target) + " ";
     
-    if noTargetIntPos != null:
+    if noTargetIntPos != -1:
         newString += str(noTargetIntPos);
 
     return newString;

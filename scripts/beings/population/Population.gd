@@ -27,16 +27,20 @@ func _process(delta: float) -> void:
 ### Analyze the population's needs and generate tasks
 func AnalyzeNeeds() -> void:
 	# Check if food is critically low
-	if townSquare.resources.has("Food") and townSquare.resources["Food"] < 20:
+	if townSquare.resources.has("Food") and townSquare.resources["Food"] <= 0:
 		CreateTask("Deliver", "Food", townSquare);
 
 	# Check if wood is critically low
-	if townSquare.resources.has("Wood") and townSquare.resources["Wood"] < 50:
+	if townSquare.resources.has("Wood") and townSquare.resources["Wood"] <= 0:
 		CreateTask("Deliver", "Wood", townSquare);
 
 	# Check for housing needs
-	if CountHouses() < beings.size():
+	if CountHouses() * 3 < beings.size():
 			CreateTask("Build", "House");
+
+	var buildingsNeedingRepair = buildings.filter(func(x): return x.type == "House" && x.health < 100);
+	for building in buildingsNeedingRepair:
+		CreateTask("Build", "House", building)
 
 	# Clean up completed or abandoned tasks
 	CleanupTasks()
@@ -45,7 +49,7 @@ func AnalyzeNeeds() -> void:
 func CreateTask(taskType: String, resourceType: String, target: GameObject = null) -> void:
 	# Avoid duplicate tasks
 	for task in taskQueue:
-		if task.taskType == taskType and task.resourceType == resourceType and task.status == Task.TaskStatus.AVAILABLE:
+		if task.taskType == taskType and task.resourceType == resourceType and task.target == target and task.status == Task.TaskStatus.AVAILABLE:
 			return
 
 	# Create and add a new task to the queue
@@ -79,6 +83,7 @@ func CountHouses() -> int:
 		if building.type == "House":
 			houseCount += 1
 	return houseCount
+
 
 ############################
 func BuildHouse(_position: int) -> GameObject:
