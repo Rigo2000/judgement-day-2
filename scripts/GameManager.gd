@@ -88,8 +88,8 @@ func SpawnPopulation():
 func SpawnGameObjects() -> void:
 	for n in 4:
 		var newGameObject = gameObjectScene.instantiate();
-		newGameObject.type = "Food";
-		newGameObject.AddToResources("Food", 10);
+		newGameObject.type = "";
+		newGameObject.AddToResources(ResourceData.new("Food", 10));
 		positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newGameObject);
 
 func SpawnBeings() -> void:

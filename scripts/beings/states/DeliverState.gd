@@ -15,11 +15,11 @@ func Update() -> void:
 	var deliverTask: Task = being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "Deliver")];
 
 	if deliverTask != null:
-		if !(being.inventory.has(deliverTask.resourceType)):
+		if !(being.resources.has(deliverTask.resourceType)):
 			var newGatherTask = Task.new().setTaskType("Gather").setResourceType(deliverTask.resourceType);
 			being.chainedTask.append(newGatherTask);
 			being.ChangeState("IdleState");
-		elif being.inventory.has(deliverTask.resourceType):
+		elif being.resources.has(deliverTask.resourceType):
 			##IF being has resource but not at same position as target, Add MoveTo
 			if being.GetPositionNodeIndex() != deliverTask.target.GetPositionNodeIndex():
 				var newMoveTask = Task.new().setTaskType("MoveTo").setTarget(deliverTask.target);
@@ -28,8 +28,6 @@ func Update() -> void:
 			else:
 				##HACK FOR TOWNNOW TODO
 				deliverTask.target.resources["food"] += 5;
-
-				#deliverTask.target.inventory.append(deliverTask.resourceType);
-				being.inventory.erase(deliverTask.resourceType);
+				deliverTask.target.AddToResources(being.TakeFromResources(ResourceData.new(deliverTask.resourceType, deliverTask.amount)));
 				being.chainedTask.erase(deliverTask);
 				being.ChangeState("IdleState");

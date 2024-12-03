@@ -13,13 +13,12 @@ func Update() -> void:
 
 	if consumeTask != null:
 		if (being.resources.has(consumeTask.resourceType)):
-			being.resources[consumeTask.resourceType] = 0;
+			being.ConsumeResource(ResourceData.new(consumeTask.resourceType, 10));
 			being.hunger += 100;
 			#print(str(being) + " eats " + consumeTask.resourceType + " and hunger is now " + str(being.hunger));
 			being.chainedTask.erase(consumeTask);
 			being.ChangeState("IdleState");
-		elif !(being.inventory.has(consumeTask.resourceType)):
-			#print(str(being) + " does not have " + consumeTask.resourceType + " in inventory");
-			var newGatherTask = Task.new().setTaskType("Gather").setResourceType("Food");
+		elif !(being.resources.has(consumeTask.resourceType)):
+			var newGatherTask = Task.new().setTaskType("Gather").setResourceType(consumeTask.resourceType);
 			being.chainedTask.append(newGatherTask);
 			being.ChangeState("IdleState");

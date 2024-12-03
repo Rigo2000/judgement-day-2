@@ -34,6 +34,7 @@ var coolDown: float = GameManager.stepDuration;
 var elapsedTime;
 
 func _ready() -> void:
+	print(str(typeof(self)));
 	hunger = 20;
 	elapsedTime = 0.0;
 	states["IdleState"] = preload("res://scripts/beings/states/IdleState.gd").new();
@@ -89,6 +90,13 @@ func ChangeState(newState: String) -> void:
 	if currentState:
 		currentState.EnterState();
 
+func ConsumeResource(_rData: ResourceData):
+	if resources.has(_rData.type):
+		if resources[_rData.type] > _rData.amount:
+			resources[_rData.type] -= _rData.amount;
+		else:
+			resources[_rData.type] = 0;
+
 func StartPregnancy():
 	print(str(self) + " is preggos");
 	pregnancy = Pregnancy.new();
@@ -107,7 +115,7 @@ func FindNearestOfResource(resourceType: String) -> GameObject:
 		if p >= minPos and p <= maxPos:
 			##GET ALL OBJECTS ON THAT POSITION
 			for obj: GameObject in GameManager.positionsNode.get_children()[p].get_children():
-				if obj.type == resourceType:
+				if obj.resources.has(resourceType):
 					objectsOfTypeInView.append(obj);
 	
 	var minDist = 1000;

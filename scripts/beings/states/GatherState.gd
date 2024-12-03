@@ -36,7 +36,7 @@ func Update() -> void:
 				being.ChangeState("IdleState");
 			##Else gather it
 			else:
-				being.AddToResources(gatherTask.target.Remove
+				being.AddToResources(gatherTask.target.TakeFromResources(ResourceData.new(gatherTask.resourceType, 1)));
 				gatherTask.status = Task.TaskStatus.COMPLETED;
 				being.chainedTask.erase(gatherTask);
 				being.ChangeState("IdleState");

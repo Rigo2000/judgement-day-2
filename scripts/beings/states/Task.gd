@@ -5,6 +5,7 @@ enum TaskStatus {AVAILABLE, ASSIGNED, COMPLETED, FAILED}
 var target: GameObject
 var taskType: String
 var resourceType: String
+var amount: int;
 var noTargetIntPos: int = -1
 var status: TaskStatus = TaskStatus.AVAILABLE
 
@@ -26,6 +27,10 @@ func setResourceType(_resourceType: String) -> Task:
 func setNoTargetIntPos(_intPosTarget: int) -> Task:
     noTargetIntPos = _intPosTarget
     return self
+
+func setAmount(_amount: int) -> Task:
+    amount = _amount;
+    return self;
 
 func GetTaskString() -> String:
     var newString = "";

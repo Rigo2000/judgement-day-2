@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://xbk2jok75e8r"]
 
-[ext_resource type="Script" path="res://scripts/GameObject.gd" id="1_ft4pp"]
+[ext_resource type="Script" path="res://scripts/utilities/GameObjects/GameObject.gd" id="1_ft4pp"]
 [ext_resource type="Texture2D" uid="uid://bq72t7rmp0if5" path="res://icon.svg" id="2_d7cid"]
 
 [node name="GameObject" type="Node2D" node_paths=PackedStringArray("label")]
