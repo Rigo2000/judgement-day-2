@@ -1,7 +1,8 @@
 extends GameObject;
 
 var effectType: String;
-var amount : int
+var amount: int
 
-func OnConsume(_being: Being):
-    _being.effectType -= amount;
+func TakeFromResources(_rData: ResourceData) -> ResourceData:
+    health -= 50;
+    return super(_rData);

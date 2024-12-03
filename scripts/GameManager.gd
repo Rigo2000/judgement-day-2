@@ -86,10 +86,13 @@ func SpawnPopulation():
 	get_tree().get_root().add_child.call_deferred(population);
 
 func SpawnGameObjects() -> void:
-	for n in 4:
+	for n in 50:
 		var newGameObject = gameObjectScene.instantiate();
 		newGameObject.type = "";
-		newGameObject.AddToResources(ResourceData.new("Food", 10));
+		if randf() > 0.5:
+			newGameObject.AddToResources(ResourceData.new("Food", 10));
+		else:
+			newGameObject.AddToResources(ResourceData.new("Wood", 10));
 		positionsNode.get_children()[randi_range(0, positionsNode.get_child_count() - 1)].add_child(newGameObject);
 
 func SpawnBeings() -> void:

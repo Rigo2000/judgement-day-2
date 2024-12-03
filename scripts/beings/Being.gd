@@ -1,7 +1,6 @@
 class_name Being extends GameObject;
 
 var hunger: int;
-var health: int;
 var age: int;
 var sleep: int;
 var devotion: int;
@@ -50,15 +49,6 @@ func _ready() -> void:
 		state.being = self;
 
 	ChangeState("IdleState");
-
-func TakeFromResources(_rData: ResourceData) -> ResourceData:
-	if resources.has(_rData.type):
-		if resources[_rData.type] - _rData.amount > 0:
-			return ResourceData.new(_rData.type, _rData.amount);
-		else:
-			return ResourceData.new(_rData.type, resources[_rData.type]);
-	else:
-		return ResourceData.new("", 0);
 
 func _process(delta: float) -> void:
 	elapsedTime += delta;
@@ -128,6 +118,15 @@ func FindNearestOfResource(resourceType: String) -> GameObject:
 	
 	var minDist = 1000;
 	var targetObj = null;
+
+	objectsOfTypeInView = objectsOfTypeInView.filter(func(x): return x.type != "Being");
+
+	var checkForDeliverTask = chainedTask.filter(func(x): return x.taskType == "Deliver");
+
+	if checkForDeliverTask.size() > 0:
+		objectsOfTypeInView = objectsOfTypeInView.filter(func(x): return x != checkForDeliverTask[0].target);
+
+	objectsOfTypeInView = objectsOfTypeInView.filter(func(x): return x.type != "Being");
 
 	##CHECK WHICH POSITION WITH FOOD IS NEAREST
 	for obj in objectsOfTypeInView:

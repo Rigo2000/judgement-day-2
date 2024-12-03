@@ -4,21 +4,22 @@ class_name GameObject extends Node2D;
 
 var type;
 
+var health: int:
+	set(amount):
+		health = clamp(health + amount, 0, 100);
+	get:
+		return health;
+
 var resources = {}
 
+func _process(delta: float) -> void:
+	DestroyObjectCheck();
+
 func _ready() -> void:
-	
 	label.text = type;
 
 func DestroyObjectCheck() -> void:
-	
-	var isEmpty: bool = true;
-
-	for r in resources.values():
-		if r > 0:
-			isEmpty = false;
-
-	if isEmpty:
+	if health <= 0:
 		queue_free();
 
 func GetPositionNodeIndex() -> int:
@@ -34,10 +35,12 @@ func TakeFromResources(_rData: ResourceData) -> ResourceData:
 		if resources[_rData.type] - _rData.amount > 0:
 			return ResourceData.new(_rData.type, _rData.amount);
 		else:
-			DestroyObjectCheck();
-			return ResourceData.new(_rData.type, resources[_rData.type]);
+			var newR = ResourceData.new(_rData.type, resources[_rData.type]);
+			resources.erase(_rData.type);
+			return newR;
 	else:
-		return ResourceData.new("", 0);
+		print("Error: being does not have resources, shouldnt have ended here")
+		return null;
 
 
 func AddToResources(_rData: ResourceData):
