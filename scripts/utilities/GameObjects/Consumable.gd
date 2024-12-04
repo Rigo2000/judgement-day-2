@@ -5,5 +5,5 @@ var amount: int
 
 func TakeFromResources(_rData: ResourceData) -> ResourceData:
     ##A hack that is needed for the setter to work
-    ChangeHealth(-50);
+    ChangeHealth(-20);
     return super(_rData);

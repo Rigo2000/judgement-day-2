@@ -27,6 +27,6 @@ func Update() -> void:
 				being.ChangeState("IdleState");
 			else:
 				##HACK FOR TOWNNOW TODO
-				deliverTask.target.AddToResources(being.TakeFromResources(ResourceData.new(deliverTask.resourceType, 10)));
+				deliverTask.target.AddToResources(being.TakeFromResources(ResourceData.new(deliverTask.resourceType, 20)));
 				being.chainedTask.erase(deliverTask);
 				being.ChangeState("IdleState");

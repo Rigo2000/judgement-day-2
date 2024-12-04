@@ -119,18 +119,19 @@ func FindNearestOfResource(resourceType: String) -> GameObject:
 	var minDist = 1000;
 	var targetObj = null;
 
+	#Check if any of the holders of the resource is another being
 	objectsOfTypeInView = objectsOfTypeInView.filter(func(x): return x.type != "Being");
 
+	#check if there's a deliver task in the stack
 	var checkForDeliverTask = chainedTask.filter(func(x): return x.taskType == "Deliver");
 
+	#Remove the target of the delivertask from the stack if it is in there
 	if checkForDeliverTask.size() > 0:
 		objectsOfTypeInView = objectsOfTypeInView.filter(func(x): return x != checkForDeliverTask[0].target);
 
-	objectsOfTypeInView = objectsOfTypeInView.filter(func(x): return x.type != "Being");
-
 	##CHECK WHICH POSITION WITH FOOD IS NEAREST
 	for obj in objectsOfTypeInView:
-		if abs(GetPositionNodeIndex() - GetPositionNodeIndex()) < minDist:
+		if abs(GetPositionNodeIndex() - obj.GetPositionNodeIndex()) < minDist:
 			targetObj = obj;
 			minDist = abs(GetPositionNodeIndex() - obj.GetPositionNodeIndex());
 		
