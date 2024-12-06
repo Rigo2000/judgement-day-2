@@ -7,6 +7,7 @@ var taskType: String
 var resourceType: String
 var amount: int;
 var noTargetIntPos: int = -1
+var initiatorTask: Task;
 var status: TaskStatus = TaskStatus.AVAILABLE
 
 var attempts;
@@ -30,6 +31,10 @@ func setNoTargetIntPos(_intPosTarget: int) -> Task:
 
 func setAmount(_amount: int) -> Task:
     amount = _amount;
+    return self;
+
+func setInitiatorTask(_task: Task) -> Task:
+    initiatorTask = _task;
     return self;
 
 func GetTaskString() -> String:

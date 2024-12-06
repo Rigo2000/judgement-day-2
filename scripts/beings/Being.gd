@@ -5,7 +5,8 @@ var age: int;
 var sleep: int;
 var devotion: int;
 
-var data: BeingData;
+var data: BeingData = BeingData.new();
+var personality = Personality.new();
 
 var pregnancy;
 
@@ -74,7 +75,6 @@ func UpdateBeingLabel() -> String:
 	newString += "\n Hunger:" + str(hunger)
 	newString += "\n Sleep:" + str(sleep);
 
-
 	for t: Task in chainedTask:
 		newString += "\n" + t.GetTaskString();
 
@@ -137,8 +137,6 @@ func FindNearestOfResource(resourceType: String) -> GameObject:
 		
 	##IF POS WITH FOOD, MOVE TOWARDS	
 	if targetObj != null:
-		#print("targertobject is " + str(targetObj))
-
 		return targetObj;
 	else:
 		return null;

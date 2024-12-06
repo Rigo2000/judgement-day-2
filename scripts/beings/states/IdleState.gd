@@ -1,10 +1,7 @@
 extends BeingState;
 
-var timeElapsed;
-var coolDown = 1.0;
-
 func EnterState() -> void:
-	timeElapsed = 0.0;
+	pass ;
 	#print(str(being) + " entered idle state");
 
 func ExitState() -> void:
@@ -12,25 +9,30 @@ func ExitState() -> void:
 	#print(str(being) + " exited idle state");
 
 func Update():
+	# Check if there are any chained tasks
 	if being.chainedTask.size() > 0:
-		if (being.chainedTask[being.chainedTask.size() - 1] != null):
-			if being.chainedTask[being.chainedTask.size() - 1].taskType == "MoveTo":
-				being.ChangeState("MoveState");
-			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Consume":
-				being.ChangeState("EatState");
-			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Gather":
-				being.ChangeState("GatherState");
-			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Deliver":
-				being.ChangeState("DeliverState");
-			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Mate":
-				being.ChangeState("MateState");
-			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Sleep":
-				being.ChangeState("SleepState");
-			if being.chainedTask[being.chainedTask.size() - 1].taskType == "Build":
-				being.ChangeState("BuildState");
+		var current_task = being.chainedTask[being.chainedTask.size() - 1]
+		if current_task != null:
+			match current_task.taskType:
+				"MoveTo":
+					being.ChangeState("MoveState")
+				"Consume":
+					being.ChangeState("EatState")
+				"Gather":
+					being.ChangeState("GatherState")
+				"Deliver":
+					being.ChangeState("DeliverState")
+				"Mate":
+					being.ChangeState("MateState")
+				"Sleep":
+					being.ChangeState("SleepState")
+				"Build":
+					being.ChangeState("BuildState")
+				"Socialize":
+					being.ChangeState("SocializeState")
 	else:
-		NewTaskLogic();
-		
+		# No tasks? Determine new tasks based on personality, emotions, and needs
+		NewTaskLogic()
 
 func NewTaskLogic():
 	being.chainedTask.clear();
