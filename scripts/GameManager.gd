@@ -4,7 +4,7 @@ var positionScene = preload("res://scenes/positions/position_scene.tscn");
 var gameObjectScene = preload("res://scenes/GameObjects/gameObject_scene.tscn");
 var beingScene = preload("res://scenes/being_scene.tscn");
 var populationScene = preload("res://scenes/GameObjects/population_scene.tscn");
-var consumableScene = preload("res://scenes/GameObjects/consumable_scene.tscn");
+var consumableScene = preload("res://scenes/GameObjects/depletable_scene.tscn");
 var buildingScene = preload("res://scenes/GameObjects/building_scene.tscn");
 
 var elapsedTime = 0.0;

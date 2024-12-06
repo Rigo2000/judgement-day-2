@@ -16,6 +16,8 @@ func Update():
 			match current_task.taskType:
 				"MoveTo":
 					being.ChangeState("MoveState")
+				"Search":
+					being.ChangeState("SearchState");
 				"Consume":
 					being.ChangeState("EatState")
 				"Gather":
@@ -35,28 +37,58 @@ func Update():
 		NewTaskLogic()
 
 func NewTaskLogic():
-	being.chainedTask.clear();
+	being.chainedTask.clear()
+
+	# Step 1: Address immediate needs
 	if being.hunger <= 10:
-		being.chainedTask.append(Task.new().setTaskType("Consume").setResourceType("Food"));
-	
+		being.chainedTask.append(Task.new().setTaskType("Consume").setResourceType("Food"))
+		return
 	elif being.sleep <= 10:
-		being.chainedTask.append(Task.new().setTaskType("Sleep"));
+		being.chainedTask.append(Task.new().setTaskType("Sleep"))
+		return
 
-	else:
-		var populationTask = being.population.GetTask();
+	# Step 2: Evaluate population tasks
+	var population_task = being.population.GetTask()
+	if population_task != null:
+		being.chainedTask.append(population_task)
+		return
 
-		if populationTask != null:
-			being.chainedTask.append(populationTask);
-		else:
-			if being.ageInDays > 13 && being.pregnancy == null:
-				##Do idle tasks like pray, wander, mate
-				##Based somewhat on personality
-				var mateTask = GetMateTask();
-				if mateTask != null:
-					being.chainedTask.append(mateTask);
-			else:
-				being.chainedTask.append(GetWanderTask());
-			
+
+	# Step 3: Personality-driven task selection
+	var task_priority = CalculateTaskPriority()
+
+	# Determine the highest-priority task
+	var selected_task_type = null
+	for task in task_priority.keys():
+		if selected_task_type == null or task_priority[task] > task_priority[selected_task_type]:
+			selected_task_type = task
+
+	# Step 4: Assign the selected task
+	match selected_task_type:
+		"Socialize":
+			being.chainedTask.append(Task.new().setTaskType("Socialize"));
+		"Explore":
+			being.chainedTask.append(GetWanderTask())
+		"Build":
+			var build_task = being.population.GetTask()
+			if build_task != null:
+				being.chainedTask.append(build_task)
+		"Pray":
+			being.chainedTask.append(Task.new().setTaskType("Pray"))
+
+	# Fallback task
+	if being.chainedTask.size() == 0:
+		being.chainedTask.append(GetWanderTask())
+
+func CalculateTaskPriority() -> Dictionary:
+	# Adjust task priorities using personality traits and emotions
+	return {
+		"Socialize": being.personality.get_trait("friendliness") + (being.personality.get_emotion("happiness") * 0.5),
+		"Explore": being.personality.get_trait("curiosity"),
+		"Hunt": being.personality.get_trait("aggression") - (being.personality.get_emotion("happiness") * 0.3),
+		"Build": being.personality.get_trait("industriousness"),
+		"Pray": being.personality.get_trait("spirituality") - (being.personality.get_emotion("stress") * 0.2),
+	}
 
 func GetWanderTask() -> Task:
 	being.chainedTask.clear();

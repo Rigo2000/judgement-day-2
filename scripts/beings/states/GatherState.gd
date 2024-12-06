@@ -16,17 +16,19 @@ func Update() -> void:
 
 	if gatherTask != null:
 		if gatherTask.target == null:
-			var nearestResourceOfType = being.FindNearestOfResource(gatherTask.resourceType);
+			being.chainedTask.append(Task.new().setTaskType("Search").setInitiatorTask(gatherTask));
+			being.ChangeState("IdleState");
+			#var nearestResourceOfType = being.FindNearestOfResource(gatherTask.resourceType);
 			#print(gatherTask.resourceType)
-			if nearestResourceOfType == null:
+			#if nearestResourceOfType == null:
 				#print(1)
-				var newWanderTask = Task.new().setTaskType("MoveTo").setNoTargetIntPos(clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 99));
-				being.chainedTask.append(newWanderTask);
-				being.ChangeState("IdleState");
-			else:
+				#var newWanderTask = Task.new().setTaskType("MoveTo").setNoTargetIntPos(clamp(being.GetPositionNodeIndex() + randi_range(-being.viewDistance, being.viewDistance), 0, 99));
+				#being.chainedTask.append(newWanderTask);
+				#being.ChangeState("IdleState");
+			#else:
 				#print(2)
-				gatherTask.target = nearestResourceOfType;
-				being.ChangeState("IdleState");
+				#gatherTask.target = nearestResourceOfType;
+				#being.ChangeState("IdleState");
 
 		else:
 			##If not on same position, add move task
@@ -36,7 +38,7 @@ func Update() -> void:
 				being.ChangeState("IdleState");
 			##Else gather it
 			else:
-				var gatherData = gatherTask.target.TakeFromResources(ResourceData.new(gatherTask.resourceType, 20))
+				var gatherData = gatherTask.target.RequestFromResources(ResourceData.new(gatherTask.resourceType, 25))
 
 				if gatherData != null:
 					being.AddToResources(gatherData);

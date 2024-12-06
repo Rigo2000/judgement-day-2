@@ -1,16 +1,16 @@
 [gd_scene load_steps=3 format=3 uid="uid://cfs2c6eba2yba"]
 
-[ext_resource type="Script" path="res://scripts/utilities/GameObjects/Consumable.gd" id="1_gqikn"]
-[ext_resource type="Texture2D" uid="uid://bq72t7rmp0if5" path="res://icon.svg" id="2_pl22x"]
+[ext_resource type="Script" path="res://scripts/utilities/GameObjects/Depletable.gd" id="1_r60x7"]
+[ext_resource type="Texture2D" uid="uid://bq72t7rmp0if5" path="res://icon.svg" id="2_fbgg7"]
 
-[node name="Consumable" type="Node2D" node_paths=PackedStringArray("label")]
-script = ExtResource("1_gqikn")
+[node name="Depletable" type="Node2D" node_paths=PackedStringArray("label")]
+script = ExtResource("1_r60x7")
 label = NodePath("Label")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.345098, 1, 0.231373, 1)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_pl22x")
+texture = ExtResource("2_fbgg7")
 
 [node name="Label" type="Label" parent="."]
 offset_left = -17.0

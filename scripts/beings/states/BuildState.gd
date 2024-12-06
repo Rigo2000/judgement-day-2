@@ -18,15 +18,11 @@ func Update() -> void:
 	if buildTask != null:
 
 		if buildTask.target != null:
-			print("sadfs")
 			if buildTask.target.health < 100:
-				print(buildTask.target.health)
 				if buildTask.target.resources.has("Wood"):
-					print("23")
-					buildTask.target.ChangeHealth(buildTask.target.TakeFromResources(ResourceData.new("Wood", 20)).amount)
+					buildTask.target.ChangeHealth(buildTask.target.RequestFromResources(ResourceData.new("Wood", 25)).amount)
 					print("building health: " + str(buildTask.target.health));
 				else:
-					print("#")
 					being.population.CreateTask("Deliver", "Wood", buildTask.target);
 					being.chainedTask.erase(buildTask);
 					being.ChangeState("IdleState");

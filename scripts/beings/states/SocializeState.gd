@@ -12,11 +12,7 @@ func ExitState() -> void:
 func Update() -> void:
 	var socializeTask: Task = being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "Socialize")];
 	
-	if !socializeTask.target.chainedTask[being.chainedTask.find(func(x): return x.taskType == "Socialize")]:
-		##If current target is no longer socializing, find new target
-		socializeTask.target == null;
-		being.ChangeState("IdleState");
-
+	
 	if socializeTask.target == null:
 		##Find resource should be better, and take in more parameters
 		##maybe be a class in and of itself TODO
@@ -24,11 +20,19 @@ func Update() -> void:
 		var newSearchTask = Task.new().setInitiatorTask(socializeTask).setTaskType("Search");
 		being.chainedTask.append(newSearchTask);
 		being.ChangeState("IdleState");
+		return ;
+
+	if !socializeTask.target.chainedTask[being.chainedTask.find(func(x): return x.taskType == "Socialize")]:
+		##If current target is no longer socializing, find new target
+		socializeTask.target == null;
+		being.ChangeState("IdleState");
+		return ;
 	
 	if socializeTask.target.GetPositionNodeIndex() != being.GetPositionNodeIndex():
 		var newMoveTask = Task.new().setTaskType("MoveTo").setTarget(socializeTask.target);
 		being.chainedTask.append(newMoveTask);
 		being.ChangeState("IdleState");
+		return ;
 
 	if being.personality.get_emotion("happiness") < 100:
 		var friendliness_factor = being.personality.get_trait("friendliness") / 100.0
@@ -42,3 +46,4 @@ func Update() -> void:
 	else:
 		being.chainedTask.erase(socializeTask); # Task complete
 		being.ChangeState("IdleState");
+		return ;

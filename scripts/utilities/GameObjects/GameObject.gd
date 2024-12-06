@@ -11,18 +11,9 @@ var resources = {}
 func ChangeHealth(amount: int):
 	health = clamp(health + amount, 0, 100);
 	
-
-func _process(delta: float) -> void:
-	DestroyObjectCheck();
-
 func _ready() -> void:
 	label.text = type;
 	health = 100;
-
-func DestroyObjectCheck() -> void:
-	
-	if health <= 0:
-		queue_free();
 
 func GetPositionNodeIndex() -> int:
 	for p in GameManager.positionsNode.get_children():
@@ -32,21 +23,27 @@ func GetPositionNodeIndex() -> int:
 	
 	return -1;
 
-func TakeFromResources(_rData: ResourceData) -> ResourceData:
-	if resources.has(_rData.type):
-		if resources[_rData.type] - _rData.amount > 0:
-			return ResourceData.new(_rData.type, _rData.amount);
+func AddToResources(resourceData: ResourceData):
+	if resources.has(resourceData.type):
+		resources[resourceData.type] += resourceData.amount;
+	else:
+		resources[resourceData.type] = resourceData.amount;
+
+func RequestFromResources(resourceData: ResourceData) -> ResourceData:
+	if resources.has(resourceData.type):
+		if resources[resourceData.type] - resourceData.amount > 0:
+			resources[resourceData.type] -= resourceData.amount;
+			return ResourceData.new(resourceData.type, resourceData.amount);
 		else:
-			var newR = ResourceData.new(_rData.type, resources[_rData.type]);
-			resources.erase(_rData.type);
-			return newR;
+			var num = resources[resourceData.type];
+			resources.erase(resourceData.type);
+			return ResourceData.new(resourceData.type, num);
 	else:
-		print("Error: being does not have resources, shouldnt have ended here")
-		return null;
+		print(str(self) + " doesnt contain any " + resourceData.type)
+		return ResourceData.new("null", 0);
 
+func IsResourcesEmpty() -> bool:
+	return resources.is_empty();
 
-func AddToResources(_rData: ResourceData):
-	if resources.has(_rData.type):
-		resources[_rData.type] += _rData.amount;
-	else:
-		resources[_rData.type] = _rData.amount;
+func DestroyObject():
+	queue_free();

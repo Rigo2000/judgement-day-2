@@ -16,14 +16,14 @@ func Update() -> void:
 
 	if searchTask.initiatorTask != null:
 
-
 		if searchTask.initiatorTask.target != null:
 			being.chainedTask.erase(searchTask);
 			being.ChangeState("IdleState");
+			return ;
 
 		##FIND SOCIALIZE
 		if searchTask.initiatorTask.taskType == "Socialize":
-			var positons: Array[Node2D] = GetPositionsWithinView();
+			var positons: Array = GetPositionsWithinView();
 
 			var beingsInView: Array[GameObject] = [];
 
@@ -38,10 +38,11 @@ func Update() -> void:
 					##TODO GET OUT OF THE THING 
 					being.chainedTask.erase(searchTask);
 					being.ChangeState("IdleState");
+					return ;
 		
 		##FIND RESOURCE
 		if searchTask.initiatorTask.taskType == "Gather":
-			var positons: Array[Node2D] = GetPositionsWithinView();
+			var positons: Array = GetPositionsWithinView();
 
 			var objectsInView: Array[GameObject] = [];
 
@@ -51,24 +52,36 @@ func Update() -> void:
 			for p in positons:
 				##Add all objects to objects in view
 				for obj: GameObject in GameManager.positionsNode.get_children()[p].get_children():
-						objectsInView.append(obj);
+					objectsInView.append(obj);
 
 			##START FILTERING
-			objectsInView.filter(func(x): return x.type != "Being");
-			objectsInView.filter(func(x): return x != deliverTarget);
-			objectsInView.filter(func(x):
-				if x.status != null:
+			##First filter things that isnt allowed to collect from
+			objectsInView = objectsInView.filter(func(x): return !x is Being);
+			objectsInView = objectsInView.filter(func(x): return x != deliverTarget);
+			objectsInView = objectsInView.filter(func(x: GameObject):
+				if x is Building:
 					if x.status != Building.BuildingStatus.UNDER_CONSTRUCTION:
-						return x
+						return x;
+				else:
+					return x;
 				)
-		
+			objectsInView = objectsInView.filter(func(x): return x.resources.has(searchTask.initiatorTask.resourceType))
+
 			#FInd the nearest
-			searchTask.initiatorTask.target = FindNearestObject(objectsInView);
-			being.chainedTask.erase(searchTask);
-			being.ChangeState("IdleState");
+			var nearestObject = FindNearestObject(objectsInView);
+
+			if nearestObject != null:
+				searchTask.initiatorTask.target = nearestObject;
+				being.chainedTask.erase(searchTask);
+				being.ChangeState("IdleState");
+				return ;
+			else:
+				being.chainedTask.append(being.GetWanderTask());
+				being.ChangeState("IdleState");
+				return ;
 
 
-func GetPositionsWithinView() -> Array[Node2D]:
+func GetPositionsWithinView() -> Array:
 	var minPos = clampi(being.GetPositionNodeIndex() - being.viewDistance, 0, 99);
 	var maxPos = clampi(being.GetPositionNodeIndex() + being.viewDistance, 0, 99);
 

@@ -45,6 +45,8 @@ func _ready() -> void:
 	states["MateState"] = preload("res://scripts/beings/states/MateState.gd").new();
 	states["SleepState"] = preload("res://scripts/beings/states/SleepState.gd").new();
 	states["BuildState"] = preload("res://scripts/beings/states/BuildState.gd").new();
+	states["SearchState"] = preload("res://scripts/beings/states/SearchState.gd").new();
+	states["SocializeState"] = preload("res://scripts/beings/states/SocializeState.gd").new();
 
 	for state: BeingState in states.values():
 		state.being = self;
@@ -147,3 +149,13 @@ func SelectBeing():
 
 func _on_button_pressed() -> void:
 	SelectBeing();
+
+
+##HELPERS
+
+
+func GetWanderTask() -> Task:
+	##Get a random position near being
+	var randomPos: int = clamp(GetPositionNodeIndex() + randi_range(-viewDistance, viewDistance), 0, 99);
+	##TODO: Fix the wander task
+	return Task.new().setTaskType("MoveTo").setNoTargetIntPos(randomPos);
