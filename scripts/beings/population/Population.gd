@@ -13,6 +13,8 @@ var coolDown: float = GameManager.stepDuration;
 
 func _ready() -> void:
 	BuildTownSquare(50);
+	var newHouse = BuildHouse(62);
+	newHouse.health = 100;
 
 	townSquare.resources = {"Food": 0, "wood": 500}
 

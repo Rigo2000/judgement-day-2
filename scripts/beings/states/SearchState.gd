@@ -29,16 +29,25 @@ func Update() -> void:
 
 			for p in positons:
 				for obj: GameObject in GameManager.positionsNode.get_children()[p].get_children():
-					if obj.type == "Being":
 						beingsInView.append(obj);
+
+			beingsInView = beingsInView.filter(func(x): return x is Being);
+			beingsInView = beingsInView.filter(func(x): return x.chainedTask.find(func(y): return y.taskType == "Socialize"));
+			beingsInView = beingsInView.filter(func(x): return x != being);
+
+			if beingsInView.size() > 0:
+				for b in beingsInView:
+					if b.chainedTask.has(func(x): return x.taskType == "Socialize"):
+						searchTask.initiatorTask.target = b;
+						##TODO GET OUT OF THE THING 
+						being.chainedTask.erase(searchTask);
+						being.ChangeState("IdleState");
+						return ;
+			else:
+				being.chainedTask.append(being.GetWanderTask())
+				being.ChangeState("IdleState");
+				return ;
 			
-			for b in beingsInView:
-				if b.chainedTask.has(func(x): return x.taskType == "Socialize"):
-					searchTask.initiatorTask.target = b;
-					##TODO GET OUT OF THE THING 
-					being.chainedTask.erase(searchTask);
-					being.ChangeState("IdleState");
-					return ;
 		
 		##FIND RESOURCE
 		if searchTask.initiatorTask.taskType == "Gather":

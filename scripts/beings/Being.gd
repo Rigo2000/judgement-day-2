@@ -65,6 +65,18 @@ func _process(delta: float) -> void:
 func UpdateBeingStats():
 	hunger -= 1;
 	sleep -= 1;
+		# Decay needs-specific emotion effects
+	if hunger < 30:
+		personality.adjust_emotion("stress", 1) # Hunger increases stress
+		personality.adjust_emotion("happiness", -1) # Hunger decreases happiness
+	if sleep < 20:
+		personality.adjust_emotion("stress", 1) # Exhaustion increases stress
+		personality.adjust_emotion("happiness", -1) # Tiredness reduces happiness
+
+	
+func UpdateBeingStats_backup():
+	hunger -= 1;
+	sleep -= 1;
 	if pregnancy != null:
 		pregnancy.UpdatePregnancy();
 		if pregnancy.IsCompleted():
