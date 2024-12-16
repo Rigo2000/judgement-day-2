@@ -9,6 +9,7 @@ func ExitState() -> void:
 	#print(str(being) + " exited idle state");
 
 func Update():
+
 	# Check if there are any chained tasks
 	if being.chainedTask.size() > 0:
 		var current_task = being.chainedTask[being.chainedTask.size() - 1]
@@ -35,6 +36,18 @@ func Update():
 	else:
 		# No tasks? Determine new tasks based on personality, emotions, and needs
 		NewTaskLogic()
+
+func CheckPersonalNeeds() -> void:
+	if being.hunger < 20:
+		if !being.chainedTask.has(func(x): return x.taskType == "Consume"):
+			being.chainedTask.clear();
+			being.chainedTask.append(Task.new().setTaskType("Consume").setResourceType("Food"));
+			return ;
+	elif being.sleep < 20:
+		if !being.chainedTask.has(func(x): return x.taskType == "Sleep"):
+			being.chainedTask.clear();
+			being.chainedTask.append(Task.new().setTaskType("Sleep"));
+			return ;
 
 func NewTaskLogic():
 	being.chainedTask.clear()
@@ -114,3 +127,30 @@ func GetMateTask() -> Task:
 		return Task.new().setTaskType("Mate").setTarget(randomBeingInPopulation);
 	else:
 		return null;
+
+
+func TaskPrioritization():
+	being.chainedTask.clear();
+	##Personal needs
+	
+	##If hungry eat
+	if being.hunger < 20:
+		being.chainedTask.apped(Task.new().setTaskType("Consume").setResourceType("Food"));
+		return ;
+	##If tired sleep
+	elif being.sleep < 20:
+		being.chainedTask.append(Task.new().setTaskType("Sleep"));
+		return ;
+	else:
+		var popTask = being.population.GetTask();
+		if popTask != null:
+			being.chainedTask.append(popTask);
+			return ;
+
+
+	##other tasks
+	#Socialize
+	#Pray - Can this become a "sermon" somehow
+
+
+	pass ;

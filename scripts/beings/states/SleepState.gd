@@ -1,9 +1,6 @@
 extends BeingState;
 
-var sleepDuration = 10;
-
 func EnterState() -> void:
-	sleepDuration = 10;
 	pass ;
 	#print(str(being) + " entered the eat state")
 	
@@ -12,15 +9,28 @@ func ExitState() -> void:
 	#print(str(being) + " exited the eat state");
 
 func Update() -> void:
-	sleepDuration -= 1;
-
 	var sleepTask: Task = being.chainedTask[being.chainedTask.find(func(x): return x.taskType == "Sleep")];
 
 	if sleepTask != null:
-		if sleepDuration <= 0:
-			being.sleep = 100;
-			being.chainedTask.erase(sleepTask);
+		##Find house
+		if sleepTask.target == null:
+			being.chainedTask.append(Task.new().setTaskType("Search").setInitiatorTask(sleepTask));
 			being.ChangeState("IdleState");
+			return ;
 
+		else:
+			if being.GetPositionNodeIndex() != sleepTask.target.GetPositionNodeIndex():
+				being.chainedTask.append(Task.new().setTaskType("MoveTo").setTarget(sleepTask.target));
+				being.ChangeState("IdleState");
+				return ;
+			else:
+				if being.sleep < 100:
+					being.sleep += 10;
+					return ;
+				else:
+					being.chainedTask.erase(sleepTask);
+					being.ChangeState("IdleState");
+					return ;
 	else:
 		being.ChangeState("IdleState");
+		return ;

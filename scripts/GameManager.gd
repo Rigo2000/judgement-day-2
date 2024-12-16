@@ -118,7 +118,7 @@ func CreateNewBeing(parentA: Being, parentB: Being = null):
 		newBeing.birthday = day;
 		newBeing.type = "Being"
 
-func CreateNewGameObject(type: String, position: int) -> GameObject:
+func CreateNewGameObject(type: String, _position: int) -> GameObject:
 	var newGameObject;
 
 	match type:
@@ -130,6 +130,6 @@ func CreateNewGameObject(type: String, position: int) -> GameObject:
 			newGameObject = buildingScene.instantiate();
 			newGameObject.type = type;
 	
-	positionsNode.get_children()[position].add_child(newGameObject);
+	positionsNode.get_children()[_position].add_child(newGameObject);
 
 	return newGameObject;
