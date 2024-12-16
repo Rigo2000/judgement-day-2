@@ -60,7 +60,9 @@ func _process(delta):
 			dayProgression = 0;
 			day += 1;
 			
-	
+func GetTime() -> int;
+	return day;
+
 func UpdateHud():
 	if selectedBeing != null:
 		labelNode.text = selectedBeing.UpdateBeingLabel();

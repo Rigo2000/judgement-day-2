@@ -17,8 +17,13 @@ func Update() -> void:
 			being.hunger += 100;
 			#print(str(being) + " eats " + consumeTask.resourceType + " and hunger is now " + str(being.hunger));
 			being.chainedTask.erase(consumeTask);
+
+			var newGameEvent = GameEvent.new().SetTime(GameManager.GetTime()).SetLocation(being.pos).SetType(GameEvent.Type.eat).SetBeing(being);
+
 			being.ChangeState("IdleState");
+			return ;
 		elif !(being.resources.has(consumeTask.resourceType)):
 			var newGatherTask = Task.new().setTaskType("Gather").setResourceType(consumeTask.resourceType);
 			being.chainedTask.append(newGatherTask);
 			being.ChangeState("IdleState");
+			return ;

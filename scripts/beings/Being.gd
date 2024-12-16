@@ -7,6 +7,8 @@ var devotion: int;
 
 var data: BeingData = BeingData.new();
 var personality = Personality.new();
+var relations = Relations.new();
+var memories = Memories.new();
 
 var pregnancy;
 
@@ -171,3 +173,11 @@ func GetWanderTask() -> Task:
 	var randomPos: int = clamp(GetPositionNodeIndex() + randi_range(-viewDistance, viewDistance), 0, 99);
 	##TODO: Fix the wander task
 	return Task.new().setTaskType("MoveTo").setNoTargetIntPos(randomPos);
+
+func HandleEvent(_event: GameEvent):
+	#Make a memory
+	if _event.being == self:
+		pass ;
+	else:
+		#Make a memory
+		pass ;
