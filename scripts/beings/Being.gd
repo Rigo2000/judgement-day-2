@@ -175,9 +175,8 @@ func GetWanderTask() -> Task:
 	return Task.new().setTaskType("MoveTo").setNoTargetIntPos(randomPos);
 
 func HandleEvent(_event: GameEvent):
-	#Make a memory
-	if _event.being == self:
-		pass ;
-	else:
-		#Make a memory
-		pass ;
+	var newExperience = Experience.new().SetEvent(_event).SetType(Experience.Type.see);
+	HandleExperience(newExperience);
+
+func HandleExperience(_experience: Experience):
+	

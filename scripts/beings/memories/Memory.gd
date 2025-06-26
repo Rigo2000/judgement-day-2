@@ -20,3 +20,4 @@ func SetTime(_time: int) -> Memory:
 func SetLocation(_location: int) -> Memory:
     location = _location;
     return self;
+
